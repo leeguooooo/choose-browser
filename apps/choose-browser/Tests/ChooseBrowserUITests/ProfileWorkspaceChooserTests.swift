@@ -15,7 +15,7 @@ final class ProfileWorkspaceChooserTests: ChooseBrowserUITestCase {
     }
 
     func testSelectsProfileAndWorkspaceThroughChooserControls() {
-        let app = launchApp(arguments: ["--uitest-onboarding-configured"])
+        let app = launchApp(arguments: ["--uitest-onboarding-configured", "--uitest-show-advanced-panel"])
 
         let profileButton = app.buttons["profileWorkspace.profileOption.work"]
         let workspaceButton = app.buttons["profileWorkspace.workspaceOption.focus"]

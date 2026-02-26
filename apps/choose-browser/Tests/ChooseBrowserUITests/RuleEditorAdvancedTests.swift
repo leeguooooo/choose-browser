@@ -15,7 +15,7 @@ final class RuleEditorAdvancedTests: ChooseBrowserUITestCase {
     }
 
     func testCreatesAdvancedRuleWithFanoutDispatchMode() {
-        let app = launchApp(arguments: ["--uitest-onboarding-configured"])
+        let app = launchApp(arguments: ["--uitest-onboarding-configured", "--uitest-show-advanced-panel"])
 
         let domainField = app.textFields["ruleEditor.domainField"]
         let pathField = app.textFields["ruleEditor.pathField"]
@@ -50,7 +50,7 @@ final class RuleEditorAdvancedTests: ChooseBrowserUITestCase {
     }
 
     func testBlocksSaveWhenRequiredFieldsAreMissing() {
-        let app = launchApp(arguments: ["--uitest-onboarding-configured"])
+        let app = launchApp(arguments: ["--uitest-onboarding-configured", "--uitest-show-advanced-panel"])
 
         let saveButton = app.buttons["ruleEditor.saveButton"]
         XCTAssertTrue(saveButton.waitForExistence(timeout: 5))

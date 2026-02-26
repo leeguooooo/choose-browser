@@ -9,12 +9,14 @@ struct RootView: View {
             ChooserView(url: session.requestURLs.first ?? placeholderURL, viewModel: session.viewModel)
                 .padding(8)
                 .frame(minWidth: 360, minHeight: 260)
+        } else if appModel.showAdvancedPanel {
+            advancedDashboardView
         } else {
-            dashboardView
+            controlPanelView
         }
     }
 
-    private var dashboardView: some View {
+    private var controlPanelView: some View {
         let lastActionText = "Last action: \(appModel.lastActionMessage)"
 
         return VStack(alignment: .leading, spacing: 14) {
@@ -26,6 +28,38 @@ struct RootView: View {
                 snapshot: appModel.defaultHandlerSnapshot,
                 onOpenSystemSettings: {
                     appModel.openSystemDefaultBrowserSettings()
+                },
+                onSetAsDefaultBrowser: {
+                    appModel.setAsDefaultBrowser()
+                },
+                onStart: nil
+            )
+
+            Text(lastActionText)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .accessibilityLabel(lastActionText)
+                .accessibilityIdentifier(AccessibilityIdentifiers.chooserLastActionLabel)
+        }
+        .padding(16)
+        .frame(minWidth: 460, minHeight: 220)
+    }
+
+    private var advancedDashboardView: some View {
+        let lastActionText = "Last action: \(appModel.lastActionMessage)"
+
+        return VStack(alignment: .leading, spacing: 14) {
+            Text("ChooseBrowser")
+                .font(.title2)
+                .fontWeight(.semibold)
+
+            DefaultBrowserStatusView(
+                snapshot: appModel.defaultHandlerSnapshot,
+                onOpenSystemSettings: {
+                    appModel.openSystemDefaultBrowserSettings()
+                },
+                onSetAsDefaultBrowser: {
+                    appModel.setAsDefaultBrowser()
                 },
                 onStart: {
                     appModel.startFromOnboarding()

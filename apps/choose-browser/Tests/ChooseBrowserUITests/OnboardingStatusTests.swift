@@ -45,6 +45,7 @@ final class OnboardingStatusTests: ChooseBrowserUITestCase {
 
         let firstLaunch = launchApp(arguments: [
             "--uitest-onboarding-configured",
+            "--uitest-show-advanced-panel",
             "--uitest-reset-settings",
             "--uitest-settings-suite",
             suiteName,
@@ -68,6 +69,7 @@ final class OnboardingStatusTests: ChooseBrowserUITestCase {
 
         let secondLaunch = launchApp(arguments: [
             "--uitest-onboarding-configured",
+            "--uitest-show-advanced-panel",
             "--uitest-settings-suite",
             suiteName,
         ])

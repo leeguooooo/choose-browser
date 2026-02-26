@@ -222,6 +222,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
         @Published var availableWorkspaces: [String] = ["General", "Focus", "Research"]
         @Published var selectedProfile: String?
         @Published var selectedWorkspace: String?
+        let showAdvancedPanel: Bool
 
         private let inboundQueue: RequestQueue
         private let routingEngine: RoutingEngine
@@ -234,8 +235,11 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
         private let routingRolloutConfiguration: RoutingRolloutConfiguration
         private let appBundleIdentifier: String
         private let uiTestTargets: [ExecutionTarget]?
+        private let autoQuitOnSuccessfulDispatch: Bool
         private var isProcessingRequest = false
         private let burstWindow: TimeInterval = 0.5
+        var onChooserPresentationChanged: ((Bool) -> Void)?
+        var onSuccessfulDispatch: (() -> Void)?
 
         init(
             inboundQueue: RequestQueue,
@@ -248,7 +252,9 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
             diagnosticsLogger: DiagnosticsLogger,
             routingRolloutConfiguration: RoutingRolloutConfiguration = .disabled,
             appBundleIdentifier: String,
-            uiTestTargets: [ExecutionTarget]? = nil
+            uiTestTargets: [ExecutionTarget]? = nil,
+            showAdvancedPanel: Bool = false,
+            autoQuitOnSuccessfulDispatch: Bool = true
         ) {
             self.inboundQueue = inboundQueue
             self.routingEngine = routingEngine
@@ -261,6 +267,8 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
             self.routingRolloutConfiguration = routingRolloutConfiguration
             self.appBundleIdentifier = appBundleIdentifier
             self.uiTestTargets = uiTestTargets
+            self.showAdvancedPanel = showAdvancedPanel
+            self.autoQuitOnSuccessfulDispatch = autoQuitOnSuccessfulDispatch
             self.fallbackBundleIdentifier = settingsStore.fallbackBundleIdentifier
             self.hiddenBundleIdentifiers = settingsStore.hiddenBundleIdentifiers
             self.defaultHandlerSnapshot = handlerInspector.snapshot(appBundleIdentifier: appBundleIdentifier)
@@ -519,7 +527,8 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
                         requestURLs: requestURLs,
                         preferredBundleIdentifier: target.id,
                         discoveredTargets: discoveredTargets,
-                        rememberTargetForHost: nil
+                        rememberTargetForHost: nil,
+                        shouldTerminateOnSuccess: true
                     )
                 },
                 onRememberForHost: { [weak self] target in
@@ -527,12 +536,14 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
                         requestURLs: requestURLs,
                         preferredBundleIdentifier: target.id,
                         discoveredTargets: discoveredTargets,
-                        rememberTargetForHost: target.id
+                        rememberTargetForHost: target.id,
+                        shouldTerminateOnSuccess: true
                     )
                 },
                 onCancel: { [weak self] in
                     self?.lastActionMessage = "cancelled"
                     self?.chooserSession = nil
+                    self?.onChooserPresentationChanged?(false)
                     self?.isProcessingRequest = false
                     self?.processNextRequestIfNeeded()
                 },
@@ -541,7 +552,8 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
                         requestURLs: requestURLs,
                         preferredBundleIdentifier: nil,
                         discoveredTargets: discoveredTargets,
-                        rememberTargetForHost: nil
+                        rememberTargetForHost: nil,
+                        shouldTerminateOnSuccess: true
                     )
                 }
             )
@@ -551,6 +563,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
                 discoveredTargets: discoveredTargets,
                 viewModel: viewModel
             )
+            onChooserPresentationChanged?(true)
 
             if requestURLs.count > 1 {
                 lastActionMessage = "batch-size:\(requestURLs.count)"
@@ -584,10 +597,12 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
             requestURLs: [URL],
             preferredBundleIdentifier: String?,
             discoveredTargets: [ExecutionTarget],
-            rememberTargetForHost: String?
+            rememberTargetForHost: String?,
+            shouldTerminateOnSuccess: Bool = false
         ) {
             guard let primaryURL = requestURLs.first else {
                 chooserSession = nil
+                onChooserPresentationChanged?(false)
                 isProcessingRequest = false
                 processNextRequestIfNeeded()
                 return
@@ -617,12 +632,19 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
                     switch finalResult {
                     case let .success(usedBundleIdentifier):
                         lastActionMessage = "opened:\(usedBundleIdentifier)"
+                        chooserSession = nil
+                        onChooserPresentationChanged?(false)
+                        isProcessingRequest = false
+                        if shouldTerminateOnSuccess, autoQuitOnSuccessfulDispatch {
+                            onSuccessfulDispatch?()
+                            return
+                        }
                     case let .failure(reason):
                         lastActionMessage = "error:\(reason)"
+                        chooserSession = nil
+                        onChooserPresentationChanged?(false)
+                        isProcessingRequest = false
                     }
-
-                    chooserSession = nil
-                    isProcessingRequest = false
                     processNextRequestIfNeeded()
                 }
             }
@@ -634,6 +656,44 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
     private let routingQueue: RequestQueue
     private let ruleStore: InMemoryRuleStore
     private let inboundPipeline: URLInboundPipeline
+
+    private func positionWindowNearMouse(_ window: NSWindow) {
+        let cursor = NSEvent.mouseLocation
+        let currentFrame = window.frame
+        let targetScreen = NSScreen.screens.first(where: { $0.frame.contains(cursor) }) ?? NSScreen.main
+        let visibleFrame = targetScreen?.visibleFrame ?? NSScreen.main?.visibleFrame ?? currentFrame
+
+        var originX = cursor.x + 12
+        var originY = cursor.y - currentFrame.height - 12
+
+        originX = min(max(originX, visibleFrame.minX), visibleFrame.maxX - currentFrame.width)
+        originY = min(max(originY, visibleFrame.minY), visibleFrame.maxY - currentFrame.height)
+
+        window.setFrameOrigin(NSPoint(x: originX, y: originY))
+    }
+
+    private func refreshWindowPresentation(isChooserPresented: Bool) {
+        guard let window else {
+            return
+        }
+
+        if isChooserPresented {
+            window.level = .statusBar
+            positionWindowNearMouse(window)
+            NSApplication.shared.activate(ignoringOtherApps: true)
+            window.orderFrontRegardless()
+            window.makeKeyAndOrderFront(nil)
+            return
+        }
+
+        window.level = .normal
+    }
+
+    private func terminateAfterSuccessfulDispatch() {
+        DispatchQueue.main.async {
+            NSApplication.shared.terminate(nil)
+        }
+    }
 
     private static func argumentValue(flag: String, arguments: [String]) -> String? {
         guard let index = arguments.firstIndex(of: flag) else {
@@ -689,6 +749,8 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
 
         let diagnosticsLogger = DiagnosticsLogger(debugMode: diagnosticsDebugMode)
         let routingRolloutConfiguration = RoutingRolloutConfiguration.from(arguments: arguments)
+        let showAdvancedPanel = arguments.contains("--show-advanced-panel") ||
+            arguments.contains("--uitest-show-advanced-panel")
 
         let uiTestTargets: [ExecutionTarget]? = {
             if arguments.contains("--uitest-empty-chooser") {
@@ -742,8 +804,16 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
             diagnosticsLogger: diagnosticsLogger,
             routingRolloutConfiguration: routingRolloutConfiguration,
             appBundleIdentifier: appBundleIdentifier,
-            uiTestTargets: uiTestTargets
+            uiTestTargets: uiTestTargets,
+            showAdvancedPanel: showAdvancedPanel,
+            autoQuitOnSuccessfulDispatch: !isUITestMode
         )
+        model.onChooserPresentationChanged = { [weak self] isPresented in
+            self?.refreshWindowPresentation(isChooserPresented: isPresented)
+        }
+        model.onSuccessfulDispatch = { [weak self] in
+            self?.terminateAfterSuccessfulDispatch()
+        }
 
         routingQueue.onEnqueue = { [weak model] in
             Task { @MainActor in
@@ -754,8 +824,10 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
         self.appModel = model
 
         let hostingView = NSHostingView(rootView: RootView(appModel: model))
+        let initialWindowWidth: CGFloat = showAdvancedPanel ? 860 : 480
+        let initialWindowHeight: CGFloat = showAdvancedPanel ? 780 : 260
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 680, height: 420),
+            contentRect: NSRect(x: 0, y: 0, width: initialWindowWidth, height: initialWindowHeight),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false

@@ -3,12 +3,15 @@ import SwiftUI
 struct DefaultBrowserStatusView: View {
     let snapshot: DefaultHandlerSnapshot
     let onOpenSystemSettings: () -> Void
-    let onStart: () -> Void
+    let onSetAsDefaultBrowser: () -> Void
+    let onStart: (() -> Void)?
 
     var body: some View {
         let statusText = snapshot.status.rawValue
-        let httpHandlerText = "http: \(snapshot.httpHandlerBundleIdentifier ?? "unknown")"
-        let httpsHandlerText = "https: \(snapshot.httpsHandlerBundleIdentifier ?? "unknown")"
+        let descriptionText = snapshot.status == .configured
+            ? "ChooseBrowser is your default browser."
+            : "Set ChooseBrowser as default to open links with browser picker."
+        let setDefaultButtonTitle = snapshot.status == .configured ? "Default browser configured" : "Set as default browser"
 
         VStack(alignment: .leading, spacing: 10) {
             HStack {
@@ -29,29 +32,30 @@ struct DefaultBrowserStatusView: View {
                     .accessibilityIdentifier(AccessibilityIdentifiers.onboardingStatusBadge)
             }
 
-            Text(httpHandlerText)
+            Text(descriptionText)
                 .font(.caption)
                 .foregroundColor(.secondary)
-                .accessibilityLabel(httpHandlerText)
-                .accessibilityIdentifier(AccessibilityIdentifiers.onboardingHTTPHandlerLabel)
-
-            Text(httpsHandlerText)
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .accessibilityLabel(httpsHandlerText)
-                .accessibilityIdentifier(AccessibilityIdentifiers.onboardingHTTPSHandlerLabel)
+                .accessibilityLabel(descriptionText)
 
             HStack(spacing: 10) {
+                Button(setDefaultButtonTitle) {
+                    onSetAsDefaultBrowser()
+                }
+                .accessibilityIdentifier(AccessibilityIdentifiers.settingsSetAsDefaultButton)
+                .disabled(snapshot.status == .configured)
+
                 Button("Open macOS Browser Settings") {
                     onOpenSystemSettings()
                 }
                 .accessibilityIdentifier(AccessibilityIdentifiers.onboardingOpenSettingsButton)
 
-                Button("Start") {
-                    onStart()
+                if let onStart {
+                    Button("Start") {
+                        onStart()
+                    }
+                    .keyboardShortcut(.defaultAction)
+                    .accessibilityIdentifier(AccessibilityIdentifiers.onboardingStartButton)
                 }
-                .keyboardShortcut(.defaultAction)
-                .accessibilityIdentifier(AccessibilityIdentifiers.onboardingStartButton)
 
                 Spacer(minLength: 0)
             }
