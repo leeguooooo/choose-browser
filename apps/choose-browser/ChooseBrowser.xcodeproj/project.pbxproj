@@ -1,0 +1,1162 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D10144BB8D7858683FFEB28 /* URLRewritePipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98D697A97B7BB9442D4971D /* URLRewritePipelineTests.swift */; };
+		11E104B7709E5CE3A3345EA3 /* ChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F3B57FC6EE0E4D59EEA86 /* ChooserView.swift */; };
+		18881176443BAEF20A6493BC /* ExtensionTransportAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394B0F13E5DE552D9C3E0962 /* ExtensionTransportAdapters.swift */; };
+		1B586EDB7AAECB9A5946F9B4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80601BC667AC10AB635AF0EE /* main.swift */; };
+		1C1F2F3A69D4F39B1C45F6BE /* RoutingEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46705BD22BFCD29BA122CD /* RoutingEngineTests.swift */; };
+		1F6A43A488674A146AFD7085 /* DiagnosticsLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CB203BFA14B8C8170471D6 /* DiagnosticsLogger.swift */; };
+		2691A9CE5F1031CA8B9AD4BB /* RoutingDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716CD703AE464D2DB8D0B41 /* RoutingDecision.swift */; };
+		28BAFEC43CD5C3735885CA8E /* ProfileWorkspaceModelsV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4489CB7CF334B961AA21F7F1 /* ProfileWorkspaceModelsV2.swift */; };
+		31B4180549B663CF87298566 /* RuleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92277FD25D44E8050418FF1C /* RuleStore.swift */; };
+		3711E59344E891F1443E95A4 /* DependencyBoundaries.md in Resources */ = {isa = PBXBuildFile; fileRef = 09757F693979E9F5CE5D139B /* DependencyBoundaries.md */; };
+		39B07A03D6E064F556295166 /* FilePredicateRuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962AE4D2B8B7B2714B8D6DCA /* FilePredicateRuleTests.swift */; };
+		3E585B2A6687D4E318A8E833 /* ChooserKeyboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827CDC10EE8705DB17357876 /* ChooserKeyboardTests.swift */; };
+		438D06B638A8FED6723381C4 /* RuleSchemaV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56C03EF93CC7A47C393F683F /* RuleSchemaV1.swift */; };
+		462D9E0F6A006DE73AD9CFB0 /* ProfileWorkspaceChooserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544B84F02A1EEB91470A3E52 /* ProfileWorkspaceChooserTests.swift */; };
+		472A2B10D9CFE87C7EF0FB54 /* RuleSchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD618367DFA3A9A689DE1B59 /* RuleSchemaV2.swift */; };
+		487298358320C1D4D146726C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F1FEFC681468FDFCD1B064 /* main.swift */; };
+		4E99AAAC12E264A2997AAA32 /* OpenExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05701190605A80D8A4A08DC1 /* OpenExecutorTests.swift */; };
+		50B60FEFFBDBA93F405833E1 /* RequestQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D697833BFB7A53A952726EFD /* RequestQueue.swift */; };
+		557BD7A29A1E7F3647EA51DE /* URLForwardingIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E5ADF209D5CB36E5E44886 /* URLForwardingIntegrationTests.swift */; };
+		5966E5C7AF48DB9776A17B45 /* Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725D11945C81A6AB591AC1DD /* Placeholder.swift */; };
+		5DAD72C1FE1D7E7284F4007D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946F4A3E976079F489AB28D8 /* main.swift */; };
+		61001288A459BCF323AAEF3E /* URLRewritePipelineIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2478677224C11DC71104D6 /* URLRewritePipelineIntegrationTests.swift */; };
+		63217F4F5B5A9B1408BAA2BF /* AdvancedConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA88AA94946B03A29D64ACC7 /* AdvancedConfigurationView.swift */; };
+		646671A833B5C0E9563B5FE7 /* RequestQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F7FA4E25D832B97ADDEC288 /* RequestQueueTests.swift */; };
+		6F382DD6137811F640AF5868 /* TargetDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C20C59385DB6F666463127B /* TargetDiscovery.swift */; };
+		70EC7BD2CFFD29F2ADC5D6B6 /* TargetDiscoveryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD3B89F7F24B76600C8EA7F /* TargetDiscoveryTests.swift */; };
+		7A840313FBBDF257394E9F67 /* ProfileWorkspaceStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8CFCC88B67A31060BC5823 /* ProfileWorkspaceStoreTests.swift */; };
+		82CE9AF0869619B7D28F02BE /* MultiTargetExecutionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D0D0783F7C0AEA8C4E119A /* MultiTargetExecutionTests.swift */; };
+		857583FEE87B52C5A60E5B72 /* DefaultHandlerInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB82561E0B48259668DF715 /* DefaultHandlerInspector.swift */; };
+		861495EFD73859EBF6DB7B50 /* InboundObjectIntakeIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E640267FEF203829158C343 /* InboundObjectIntakeIntegrationTests.swift */; };
+		8766DFE031518D5F7ABBB471 /* URLRewritePipelineV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77242AC6506C1326551E6CF4 /* URLRewritePipelineV2.swift */; };
+		8C50119131342DB1F3EDD9F5 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C7BF79E3408BF39F021BD4 /* RootView.swift */; };
+		8F0DDD7632201EE5320337D6 /* ChooseBrowserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2A260EDBFA343CAB172DE3 /* ChooseBrowserApp.swift */; };
+		8FF699BAC5AA0EDD41E4A71D /* TargetDiscoveryCapabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60AB27ECE89A265984C9FC1 /* TargetDiscoveryCapabilityTests.swift */; };
+		908929BE64D1455CC95B0833 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979F46DF58428377958FEB1C /* Models.swift */; };
+		92787B621C00B49EB489A483 /* RuleEngineV2DeterminismTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90064F32214F9ACA30B50DD9 /* RuleEngineV2DeterminismTests.swift */; };
+		93BCF4E8AA5DA240D48D58C3 /* ChooserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 061F16D4C87EFFBB247A9073 /* ChooserViewModel.swift */; };
+		953CC97B1E296EDE15EADD52 /* HandoffBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58817E7CBBC2CB6076C51075 /* HandoffBroker.swift */; };
+		97ED88381EDF1BC21D88371A /* RuleEngineV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4759F47D579FA1E3BEFB1C /* RuleEngineV2.swift */; };
+		A06B01D3ED79C11F6F109AC1 /* ContractSurfaceV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A317DB41551100C1722DBAA /* ContractSurfaceV2.swift */; };
+		A20F222E3C97CF0FCEA1F191 /* ChooseBrowserUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5477350C0600B73189D953 /* ChooseBrowserUITests.swift */; };
+		A74F440FBD4248E6086B7AB9 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C2AA8C5311E0DC8B78203F /* AccessibilityIdentifiers.swift */; };
+		AAAA413B9ACF886963B4E7BB /* ModuleBoundarySentinel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA18FC75BC42983497512327 /* ModuleBoundarySentinel.swift */; };
+		B1AB669FBB4229526B703EF6 /* OnboardingStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156B518E347CE747C01771AC /* OnboardingStatusTests.swift */; };
+		B2C01CF76232ABDA0487961C /* OpenExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB27AD8680C9263C6E298405 /* OpenExecutor.swift */; };
+		BB74227297A0B7CE0A0C2EB3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01C85D743D60B8F9A8ED0D3 /* main.swift */; };
+		BD400B4165590577E60D0108 /* RuleEditorAdvancedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC44D3879078B51E1D0B11 /* RuleEditorAdvancedTests.swift */; };
+		BF8CA5F6A04CC9BCC47EF13A /* ContractSurfaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582285DF05990CB84C7B1C5F /* ContractSurfaceTests.swift */; };
+		C1716BC7A41EE91E98770995 /* ProfileWorkspaceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CA8A4AE8B2ACC474C88947 /* ProfileWorkspaceStore.swift */; };
+		C5DCFCC79B24AB02BA92583D /* RoutingShadowComparisonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B30DF50DEF26BA7DDF22ED3 /* RoutingShadowComparisonTests.swift */; };
+		C769BED1CA68DC99CCFE60B3 /* RuleSchemaV2MigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A7707A133117F202F05269 /* RuleSchemaV2MigrationTests.swift */; };
+		C947B175542577FA9B490448 /* ChooserEmptyStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB859FC29D75D1CF3FDDA5 /* ChooserEmptyStateTests.swift */; };
+		C99B1DD28173095924A7D089 /* BrowserSupportMatrixIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A7BFE490F9C6855784E723 /* BrowserSupportMatrixIntegrationTests.swift */; };
+		D201FB93C61378A6ACBE3AF6 /* DefaultBrowserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83829B417A3042F6A22A82AD /* DefaultBrowserStatusView.swift */; };
+		D5A2F70CE8772B109ECFB4E7 /* RoutingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF379881ACEA2F95C39EEF0B /* RoutingCoordinator.swift */; };
+		D604AF252DFF43B5C7C4C35F /* AppSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD262965A1C9235A5CFE508 /* AppSettingsStore.swift */; };
+		DB0C77BAA0DD4FF2C28A7BF2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162ADBEAED73EB4A63F5A7AC /* SettingsView.swift */; };
+		DB1A5304466C1D2FEC4FBDC2 /* ExtensionTransportIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C1037BA0CC7076D86D461F /* ExtensionTransportIntegrationTests.swift */; };
+		E00A4A163F48016966876D8A /* InboundRequestV2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6B95BF74714DA03564E74E /* InboundRequestV2Tests.swift */; };
+		E7065570827BFA26688695C7 /* ChooseBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633CB7283CE8AA6F0717B059 /* ChooseBrowserTests.swift */; };
+		E75F9E8D51033A73EDB07133 /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75273BCFAC7AD0FA018875F /* FeatureFlags.swift */; };
+		E9E4A8013A0B1D9527306755 /* HandoffBrokerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F02AB23F1AF1A4D2624E0E /* HandoffBrokerTests.swift */; };
+		F0A1576B7CC48FD8D51D6484 /* RuleStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE6D3B1A73DF7FECF27A5C /* RuleStoreTests.swift */; };
+		F6E3BCA04DDB36802F7573A3 /* RoutingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BF56E325BF0B9C7AC7C640 /* RoutingEngine.swift */; };
+		FF120E298E0360F14035C51F /* RoutingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD04D85AF97FDD3F5CB4D09 /* RoutingRequest.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0076B1C168B4809C70AFF9BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCA50E6953307CCC3BAFEBE7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B00F74B5261166D8C1F1136;
+			remoteInfo = LinkSink;
+		};
+		3341B46B1A6D9DB725547E8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCA50E6953307CCC3BAFEBE7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8EF02937B09256BC08E1AC64;
+			remoteInfo = ChooseBrowser;
+		};
+		69C974204B1C86F999507CA8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCA50E6953307CCC3BAFEBE7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8EF02937B09256BC08E1AC64;
+			remoteInfo = ChooseBrowser;
+		};
+		7F03DC9AA7E0D7DD393ABEC3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCA50E6953307CCC3BAFEBE7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8EF02937B09256BC08E1AC64;
+			remoteInfo = ChooseBrowser;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		05701190605A80D8A4A08DC1 /* OpenExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExecutorTests.swift; sourceTree = "<group>"; };
+		05A7707A133117F202F05269 /* RuleSchemaV2MigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleSchemaV2MigrationTests.swift; sourceTree = "<group>"; };
+		061F16D4C87EFFBB247A9073 /* ChooserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooserViewModel.swift; sourceTree = "<group>"; };
+		09757F693979E9F5CE5D139B /* DependencyBoundaries.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DependencyBoundaries.md; sourceTree = "<group>"; };
+		0A0F84FF67A2850C15A27496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0F7FA4E25D832B97ADDEC288 /* RequestQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestQueueTests.swift; sourceTree = "<group>"; };
+		10F02AB23F1AF1A4D2624E0E /* HandoffBrokerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoffBrokerTests.swift; sourceTree = "<group>"; };
+		156B518E347CE747C01771AC /* OnboardingStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStatusTests.swift; sourceTree = "<group>"; };
+		162ADBEAED73EB4A63F5A7AC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		229895872E0342C20C9CC1C4 /* LinkSink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LinkSink.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B30DF50DEF26BA7DDF22ED3 /* RoutingShadowComparisonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingShadowComparisonTests.swift; sourceTree = "<group>"; };
+		2E640267FEF203829158C343 /* InboundObjectIntakeIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboundObjectIntakeIntegrationTests.swift; sourceTree = "<group>"; };
+		394B0F13E5DE552D9C3E0962 /* ExtensionTransportAdapters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTransportAdapters.swift; sourceTree = "<group>"; };
+		39CB203BFA14B8C8170471D6 /* DiagnosticsLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsLogger.swift; sourceTree = "<group>"; };
+		3C20C59385DB6F666463127B /* TargetDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetDiscovery.swift; sourceTree = "<group>"; };
+		4489CB7CF334B961AA21F7F1 /* ProfileWorkspaceModelsV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWorkspaceModelsV2.swift; sourceTree = "<group>"; };
+		4E2A260EDBFA343CAB172DE3 /* ChooseBrowserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseBrowserApp.swift; sourceTree = "<group>"; };
+		50E5ADF209D5CB36E5E44886 /* URLForwardingIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLForwardingIntegrationTests.swift; sourceTree = "<group>"; };
+		544B84F02A1EEB91470A3E52 /* ProfileWorkspaceChooserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWorkspaceChooserTests.swift; sourceTree = "<group>"; };
+		56C03EF93CC7A47C393F683F /* RuleSchemaV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleSchemaV1.swift; sourceTree = "<group>"; };
+		574EEDB38CB8812037368E06 /* NativeMessagingHost */ = {isa = PBXFileReference; includeInIndex = 0; path = NativeMessagingHost; sourceTree = BUILT_PRODUCTS_DIR; };
+		582285DF05990CB84C7B1C5F /* ContractSurfaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractSurfaceTests.swift; sourceTree = "<group>"; };
+		58817E7CBBC2CB6076C51075 /* HandoffBroker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoffBroker.swift; sourceTree = "<group>"; };
+		5A2478677224C11DC71104D6 /* URLRewritePipelineIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRewritePipelineIntegrationTests.swift; sourceTree = "<group>"; };
+		633CB7283CE8AA6F0717B059 /* ChooseBrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseBrowserTests.swift; sourceTree = "<group>"; };
+		64138EBAD8EF9C8B67EA7394 /* ChooseBrowserUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChooseBrowserUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		69C2AA8C5311E0DC8B78203F /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		6A2F3B57FC6EE0E4D59EEA86 /* ChooserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooserView.swift; sourceTree = "<group>"; };
+		6A317DB41551100C1722DBAA /* ContractSurfaceV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractSurfaceV2.swift; sourceTree = "<group>"; };
+		725D11945C81A6AB591AC1DD /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
+		74A7BFE490F9C6855784E723 /* BrowserSupportMatrixIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserSupportMatrixIntegrationTests.swift; sourceTree = "<group>"; };
+		77242AC6506C1326551E6CF4 /* URLRewritePipelineV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRewritePipelineV2.swift; sourceTree = "<group>"; };
+		77FE6D3B1A73DF7FECF27A5C /* RuleStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleStoreTests.swift; sourceTree = "<group>"; };
+		7A5477350C0600B73189D953 /* ChooseBrowserUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseBrowserUITests.swift; sourceTree = "<group>"; };
+		7C46705BD22BFCD29BA122CD /* RoutingEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingEngineTests.swift; sourceTree = "<group>"; };
+		7CD3B89F7F24B76600C8EA7F /* TargetDiscoveryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetDiscoveryTests.swift; sourceTree = "<group>"; };
+		7DE29570451811ABCAD12EB1 /* ChooseBrowserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChooseBrowserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		80601BC667AC10AB635AF0EE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		80CA8A4AE8B2ACC474C88947 /* ProfileWorkspaceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWorkspaceStore.swift; sourceTree = "<group>"; };
+		827CDC10EE8705DB17357876 /* ChooserKeyboardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooserKeyboardTests.swift; sourceTree = "<group>"; };
+		83829B417A3042F6A22A82AD /* DefaultBrowserStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBrowserStatusView.swift; sourceTree = "<group>"; };
+		83F1FEFC681468FDFCD1B064 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		87C7BF79E3408BF39F021BD4 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		8A4759F47D579FA1E3BEFB1C /* RuleEngineV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEngineV2.swift; sourceTree = "<group>"; };
+		90064F32214F9ACA30B50DD9 /* RuleEngineV2DeterminismTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEngineV2DeterminismTests.swift; sourceTree = "<group>"; };
+		92277FD25D44E8050418FF1C /* RuleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleStore.swift; sourceTree = "<group>"; };
+		946F4A3E976079F489AB28D8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		962AE4D2B8B7B2714B8D6DCA /* FilePredicateRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePredicateRuleTests.swift; sourceTree = "<group>"; };
+		979F46DF58428377958FEB1C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		9ADF5A61FDA4C6F3B281816E /* SafariBridgeHost */ = {isa = PBXFileReference; includeInIndex = 0; path = SafariBridgeHost; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2BF56E325BF0B9C7AC7C640 /* RoutingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingEngine.swift; sourceTree = "<group>"; };
+		A716CD703AE464D2DB8D0B41 /* RoutingDecision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingDecision.swift; sourceTree = "<group>"; };
+		AAAC44D3879078B51E1D0B11 /* RuleEditorAdvancedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEditorAdvancedTests.swift; sourceTree = "<group>"; };
+		ABD262965A1C9235A5CFE508 /* AppSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsStore.swift; sourceTree = "<group>"; };
+		B01C85D743D60B8F9A8ED0D3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		B2221953342998566B646D11 /* ChooseBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChooseBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6D0D0783F7C0AEA8C4E119A /* MultiTargetExecutionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTargetExecutionTests.swift; sourceTree = "<group>"; };
+		B75273BCFAC7AD0FA018875F /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
+		BA88AA94946B03A29D64ACC7 /* AdvancedConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedConfigurationView.swift; sourceTree = "<group>"; };
+		BBB82561E0B48259668DF715 /* DefaultHandlerInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultHandlerInspector.swift; sourceTree = "<group>"; };
+		BCD04D85AF97FDD3F5CB4D09 /* RoutingRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingRequest.swift; sourceTree = "<group>"; };
+		CA8CFCC88B67A31060BC5823 /* ProfileWorkspaceStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWorkspaceStoreTests.swift; sourceTree = "<group>"; };
+		CF379881ACEA2F95C39EEF0B /* RoutingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingCoordinator.swift; sourceTree = "<group>"; };
+		D31D9D044C14C4DA5356CFBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D60AB27ECE89A265984C9FC1 /* TargetDiscoveryCapabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetDiscoveryCapabilityTests.swift; sourceTree = "<group>"; };
+		D697833BFB7A53A952726EFD /* RequestQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestQueue.swift; sourceTree = "<group>"; };
+		D6FB859FC29D75D1CF3FDDA5 /* ChooserEmptyStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooserEmptyStateTests.swift; sourceTree = "<group>"; };
+		E3C1037BA0CC7076D86D461F /* ExtensionTransportIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTransportIntegrationTests.swift; sourceTree = "<group>"; };
+		EA18FC75BC42983497512327 /* ModuleBoundarySentinel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBoundarySentinel.swift; sourceTree = "<group>"; };
+		ED40FB083493EF48AEDAB391 /* ChooseBrowserIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChooseBrowserIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F98D697A97B7BB9442D4971D /* URLRewritePipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRewritePipelineTests.swift; sourceTree = "<group>"; };
+		FB27AD8680C9263C6E298405 /* OpenExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExecutor.swift; sourceTree = "<group>"; };
+		FB6B95BF74714DA03564E74E /* InboundRequestV2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboundRequestV2Tests.swift; sourceTree = "<group>"; };
+		FD618367DFA3A9A689DE1B59 /* RuleSchemaV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleSchemaV2.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0F602E464A6733A000804EDD /* ChooseBrowserUITests */ = {
+			isa = PBXGroup;
+			children = (
+				7A5477350C0600B73189D953 /* ChooseBrowserUITests.swift */,
+				D6FB859FC29D75D1CF3FDDA5 /* ChooserEmptyStateTests.swift */,
+				827CDC10EE8705DB17357876 /* ChooserKeyboardTests.swift */,
+				156B518E347CE747C01771AC /* OnboardingStatusTests.swift */,
+				544B84F02A1EEB91470A3E52 /* ProfileWorkspaceChooserTests.swift */,
+				AAAC44D3879078B51E1D0B11 /* RuleEditorAdvancedTests.swift */,
+			);
+			name = ChooseBrowserUITests;
+			path = Tests/ChooseBrowserUITests;
+			sourceTree = "<group>";
+		};
+		171363608B1179719B6D0E15 /* Execution */ = {
+			isa = PBXGroup;
+			children = (
+				FB27AD8680C9263C6E298405 /* OpenExecutor.swift */,
+			);
+			path = Execution;
+			sourceTree = "<group>";
+		};
+		20A2EC2A0803A9F2A2A7B81D /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				ABD262965A1C9235A5CFE508 /* AppSettingsStore.swift */,
+				BBB82561E0B48259668DF715 /* DefaultHandlerInspector.swift */,
+				09757F693979E9F5CE5D139B /* DependencyBoundaries.md */,
+				39CB203BFA14B8C8170471D6 /* DiagnosticsLogger.swift */,
+				B75273BCFAC7AD0FA018875F /* FeatureFlags.swift */,
+				EA18FC75BC42983497512327 /* ModuleBoundarySentinel.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		2E8277110254267AF82196EB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B2221953342998566B646D11 /* ChooseBrowser.app */,
+				ED40FB083493EF48AEDAB391 /* ChooseBrowserIntegrationTests.xctest */,
+				7DE29570451811ABCAD12EB1 /* ChooseBrowserTests.xctest */,
+				64138EBAD8EF9C8B67EA7394 /* ChooseBrowserUITests.xctest */,
+				229895872E0342C20C9CC1C4 /* LinkSink.app */,
+				574EEDB38CB8812037368E06 /* NativeMessagingHost */,
+				9ADF5A61FDA4C6F3B281816E /* SafariBridgeHost */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3A6B9DDFA0EE1428C1D06B2A /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				69C2AA8C5311E0DC8B78203F /* AccessibilityIdentifiers.swift */,
+				4E2A260EDBFA343CAB172DE3 /* ChooseBrowserApp.swift */,
+				87C7BF79E3408BF39F021BD4 /* RootView.swift */,
+				FAC2C763671361FECB0B7215 /* Chooser */,
+				CFC7F29FFDF18C7810EF39F9 /* Onboarding */,
+				96D490ED57AD21C88B82388E /* Settings */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		3BE9D5BAB5B6838422CBED39 /* ChooseBrowserTests */ = {
+			isa = PBXGroup;
+			children = (
+				633CB7283CE8AA6F0717B059 /* ChooseBrowserTests.swift */,
+				582285DF05990CB84C7B1C5F /* ContractSurfaceTests.swift */,
+				962AE4D2B8B7B2714B8D6DCA /* FilePredicateRuleTests.swift */,
+				10F02AB23F1AF1A4D2624E0E /* HandoffBrokerTests.swift */,
+				FB6B95BF74714DA03564E74E /* InboundRequestV2Tests.swift */,
+				B6D0D0783F7C0AEA8C4E119A /* MultiTargetExecutionTests.swift */,
+				05701190605A80D8A4A08DC1 /* OpenExecutorTests.swift */,
+				CA8CFCC88B67A31060BC5823 /* ProfileWorkspaceStoreTests.swift */,
+				0F7FA4E25D832B97ADDEC288 /* RequestQueueTests.swift */,
+				7C46705BD22BFCD29BA122CD /* RoutingEngineTests.swift */,
+				90064F32214F9ACA30B50DD9 /* RuleEngineV2DeterminismTests.swift */,
+				05A7707A133117F202F05269 /* RuleSchemaV2MigrationTests.swift */,
+				77FE6D3B1A73DF7FECF27A5C /* RuleStoreTests.swift */,
+				D60AB27ECE89A265984C9FC1 /* TargetDiscoveryCapabilityTests.swift */,
+				7CD3B89F7F24B76600C8EA7F /* TargetDiscoveryTests.swift */,
+				F98D697A97B7BB9442D4971D /* URLRewritePipelineTests.swift */,
+			);
+			name = ChooseBrowserTests;
+			path = Tests/ChooseBrowserTests;
+			sourceTree = "<group>";
+		};
+		49ABEBFD9F65F260EB978C74 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0A0F84FF67A2850C15A27496 /* Info.plist */,
+				B01C85D743D60B8F9A8ED0D3 /* main.swift */,
+				725D11945C81A6AB591AC1DD /* Placeholder.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		569AB2C3CECC33F171856BD8 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				80CA8A4AE8B2ACC474C88947 /* ProfileWorkspaceStore.swift */,
+				56C03EF93CC7A47C393F683F /* RuleSchemaV1.swift */,
+				FD618367DFA3A9A689DE1B59 /* RuleSchemaV2.swift */,
+				92277FD25D44E8050418FF1C /* RuleStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		672941A3DEC5BB94B73DA3A7 /* ChooseBrowserIntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				74A7BFE490F9C6855784E723 /* BrowserSupportMatrixIntegrationTests.swift */,
+				E3C1037BA0CC7076D86D461F /* ExtensionTransportIntegrationTests.swift */,
+				2E640267FEF203829158C343 /* InboundObjectIntakeIntegrationTests.swift */,
+				2B30DF50DEF26BA7DDF22ED3 /* RoutingShadowComparisonTests.swift */,
+				50E5ADF209D5CB36E5E44886 /* URLForwardingIntegrationTests.swift */,
+				5A2478677224C11DC71104D6 /* URLRewritePipelineIntegrationTests.swift */,
+			);
+			name = ChooseBrowserIntegrationTests;
+			path = Tests/ChooseBrowserIntegrationTests;
+			sourceTree = "<group>";
+		};
+		96D490ED57AD21C88B82388E /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				BA88AA94946B03A29D64ACC7 /* AdvancedConfigurationView.swift */,
+				162ADBEAED73EB4A63F5A7AC /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A08557558DD895CD8F03C0FC /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				D697833BFB7A53A952726EFD /* RequestQueue.swift */,
+				CF379881ACEA2F95C39EEF0B /* RoutingCoordinator.swift */,
+				A2BF56E325BF0B9C7AC7C640 /* RoutingEngine.swift */,
+				8A4759F47D579FA1E3BEFB1C /* RuleEngineV2.swift */,
+				77242AC6506C1326551E6CF4 /* URLRewritePipelineV2.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		C28181F7248C3571AAB47971 /* Discovery */ = {
+			isa = PBXGroup;
+			children = (
+				3C20C59385DB6F666463127B /* TargetDiscovery.swift */,
+			);
+			path = Discovery;
+			sourceTree = "<group>";
+		};
+		CFC7F29FFDF18C7810EF39F9 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				83829B417A3042F6A22A82AD /* DefaultBrowserStatusView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		D938500FD61C8194E225B308 /* SafariBridgeHost */ = {
+			isa = PBXGroup;
+			children = (
+				946F4A3E976079F489AB28D8 /* main.swift */,
+			);
+			name = SafariBridgeHost;
+			path = Adapters/SafariBridgeHost;
+			sourceTree = "<group>";
+		};
+		E6835206B64F7B2CCFDDBD0F = {
+			isa = PBXGroup;
+			children = (
+				49ABEBFD9F65F260EB978C74 /* App */,
+				672941A3DEC5BB94B73DA3A7 /* ChooseBrowserIntegrationTests */,
+				3BE9D5BAB5B6838422CBED39 /* ChooseBrowserTests */,
+				0F602E464A6733A000804EDD /* ChooseBrowserUITests */,
+				F53F55AEEEB9207B86FB6846 /* Core */,
+				C28181F7248C3571AAB47971 /* Discovery */,
+				171363608B1179719B6D0E15 /* Execution */,
+				FA508C35CBA3496ABD2E66F6 /* LinkSink */,
+				E6A8C3439DAF4C559847F973 /* NativeMessagingHost */,
+				A08557558DD895CD8F03C0FC /* Routing */,
+				D938500FD61C8194E225B308 /* SafariBridgeHost */,
+				569AB2C3CECC33F171856BD8 /* Store */,
+				20A2EC2A0803A9F2A2A7B81D /* Support */,
+				3A6B9DDFA0EE1428C1D06B2A /* UI */,
+				2E8277110254267AF82196EB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E6A8C3439DAF4C559847F973 /* NativeMessagingHost */ = {
+			isa = PBXGroup;
+			children = (
+				80601BC667AC10AB635AF0EE /* main.swift */,
+			);
+			name = NativeMessagingHost;
+			path = Adapters/NativeMessagingHost;
+			sourceTree = "<group>";
+		};
+		F53F55AEEEB9207B86FB6846 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				6A317DB41551100C1722DBAA /* ContractSurfaceV2.swift */,
+				394B0F13E5DE552D9C3E0962 /* ExtensionTransportAdapters.swift */,
+				58817E7CBBC2CB6076C51075 /* HandoffBroker.swift */,
+				979F46DF58428377958FEB1C /* Models.swift */,
+				4489CB7CF334B961AA21F7F1 /* ProfileWorkspaceModelsV2.swift */,
+				A716CD703AE464D2DB8D0B41 /* RoutingDecision.swift */,
+				BCD04D85AF97FDD3F5CB4D09 /* RoutingRequest.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		FA508C35CBA3496ABD2E66F6 /* LinkSink */ = {
+			isa = PBXGroup;
+			children = (
+				D31D9D044C14C4DA5356CFBE /* Info.plist */,
+				83F1FEFC681468FDFCD1B064 /* main.swift */,
+			);
+			name = LinkSink;
+			path = Integration/LinkSink;
+			sourceTree = "<group>";
+		};
+		FAC2C763671361FECB0B7215 /* Chooser */ = {
+			isa = PBXGroup;
+			children = (
+				6A2F3B57FC6EE0E4D59EEA86 /* ChooserView.swift */,
+				061F16D4C87EFFBB247A9073 /* ChooserViewModel.swift */,
+			);
+			path = Chooser;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0B00F74B5261166D8C1F1136 /* LinkSink */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2CFFA6DFF27C847BEBEC9E08 /* Build configuration list for PBXNativeTarget "LinkSink" */;
+			buildPhases = (
+				AC34B6CECBDA73CBA447F97C /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LinkSink;
+			packageProductDependencies = (
+			);
+			productName = LinkSink;
+			productReference = 229895872E0342C20C9CC1C4 /* LinkSink.app */;
+			productType = "com.apple.product-type.application";
+		};
+		15712ADF8DFB1F28E387949D /* ChooseBrowserUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 10B78BC7FD0FEE8A34368D44 /* Build configuration list for PBXNativeTarget "ChooseBrowserUITests" */;
+			buildPhases = (
+				162D076066BF5F3880796221 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6FD4755FAEFE74555D258B96 /* PBXTargetDependency */,
+			);
+			name = ChooseBrowserUITests;
+			packageProductDependencies = (
+			);
+			productName = ChooseBrowserUITests;
+			productReference = 64138EBAD8EF9C8B67EA7394 /* ChooseBrowserUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		1ABF637647B18C181E43DB5F /* ChooseBrowserIntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EADEE486B85B5A636DAE19A5 /* Build configuration list for PBXNativeTarget "ChooseBrowserIntegrationTests" */;
+			buildPhases = (
+				C2363DE69EC015C44E4B581C /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EF8F3513FD5EB5AF6C6BF35A /* PBXTargetDependency */,
+				6E6CE69FDEDD41FC68628508 /* PBXTargetDependency */,
+			);
+			name = ChooseBrowserIntegrationTests;
+			packageProductDependencies = (
+			);
+			productName = ChooseBrowserIntegrationTests;
+			productReference = ED40FB083493EF48AEDAB391 /* ChooseBrowserIntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		30CD66844A62C81B3CEDBA46 /* SafariBridgeHost */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 72BD0CF520EBCE31C67E8496 /* Build configuration list for PBXNativeTarget "SafariBridgeHost" */;
+			buildPhases = (
+				97A7531393E18AE7293A944F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SafariBridgeHost;
+			packageProductDependencies = (
+			);
+			productName = SafariBridgeHost;
+			productReference = 9ADF5A61FDA4C6F3B281816E /* SafariBridgeHost */;
+			productType = "com.apple.product-type.tool";
+		};
+		335F02ED22D17DD8824DBE4A /* NativeMessagingHost */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7A99C0AFC13B5833B4F43DF /* Build configuration list for PBXNativeTarget "NativeMessagingHost" */;
+			buildPhases = (
+				9993286643835D8A03574F70 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NativeMessagingHost;
+			packageProductDependencies = (
+			);
+			productName = NativeMessagingHost;
+			productReference = 574EEDB38CB8812037368E06 /* NativeMessagingHost */;
+			productType = "com.apple.product-type.tool";
+		};
+		51D2790EB00DEEBE4FB474C3 /* ChooseBrowserTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A178DFA84C7B8A9227C455BC /* Build configuration list for PBXNativeTarget "ChooseBrowserTests" */;
+			buildPhases = (
+				95D5945DAB989DFFCC0BFDD2 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				94BB2A612E36D16D90A369BB /* PBXTargetDependency */,
+			);
+			name = ChooseBrowserTests;
+			packageProductDependencies = (
+			);
+			productName = ChooseBrowserTests;
+			productReference = 7DE29570451811ABCAD12EB1 /* ChooseBrowserTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8EF02937B09256BC08E1AC64 /* ChooseBrowser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB0D6F268FBFCC52662E396F /* Build configuration list for PBXNativeTarget "ChooseBrowser" */;
+			buildPhases = (
+				47522A49B4EEABC06D002A05 /* Sources */,
+				0001EE82E6ED97F4608F44C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChooseBrowser;
+			packageProductDependencies = (
+			);
+			productName = ChooseBrowser;
+			productReference = B2221953342998566B646D11 /* ChooseBrowser.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FCA50E6953307CCC3BAFEBE7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					15712ADF8DFB1F28E387949D = {
+						TestTargetID = 8EF02937B09256BC08E1AC64;
+					};
+				};
+			};
+			buildConfigurationList = 4704F780B578A13421322695 /* Build configuration list for PBXProject "ChooseBrowser" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = E6835206B64F7B2CCFDDBD0F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8EF02937B09256BC08E1AC64 /* ChooseBrowser */,
+				1ABF637647B18C181E43DB5F /* ChooseBrowserIntegrationTests */,
+				51D2790EB00DEEBE4FB474C3 /* ChooseBrowserTests */,
+				15712ADF8DFB1F28E387949D /* ChooseBrowserUITests */,
+				0B00F74B5261166D8C1F1136 /* LinkSink */,
+				335F02ED22D17DD8824DBE4A /* NativeMessagingHost */,
+				30CD66844A62C81B3CEDBA46 /* SafariBridgeHost */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0001EE82E6ED97F4608F44C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3711E59344E891F1443E95A4 /* DependencyBoundaries.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		162D076066BF5F3880796221 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A20F222E3C97CF0FCEA1F191 /* ChooseBrowserUITests.swift in Sources */,
+				C947B175542577FA9B490448 /* ChooserEmptyStateTests.swift in Sources */,
+				3E585B2A6687D4E318A8E833 /* ChooserKeyboardTests.swift in Sources */,
+				B1AB669FBB4229526B703EF6 /* OnboardingStatusTests.swift in Sources */,
+				462D9E0F6A006DE73AD9CFB0 /* ProfileWorkspaceChooserTests.swift in Sources */,
+				BD400B4165590577E60D0108 /* RuleEditorAdvancedTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47522A49B4EEABC06D002A05 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A74F440FBD4248E6086B7AB9 /* AccessibilityIdentifiers.swift in Sources */,
+				63217F4F5B5A9B1408BAA2BF /* AdvancedConfigurationView.swift in Sources */,
+				D604AF252DFF43B5C7C4C35F /* AppSettingsStore.swift in Sources */,
+				8F0DDD7632201EE5320337D6 /* ChooseBrowserApp.swift in Sources */,
+				11E104B7709E5CE3A3345EA3 /* ChooserView.swift in Sources */,
+				93BCF4E8AA5DA240D48D58C3 /* ChooserViewModel.swift in Sources */,
+				A06B01D3ED79C11F6F109AC1 /* ContractSurfaceV2.swift in Sources */,
+				D201FB93C61378A6ACBE3AF6 /* DefaultBrowserStatusView.swift in Sources */,
+				857583FEE87B52C5A60E5B72 /* DefaultHandlerInspector.swift in Sources */,
+				1F6A43A488674A146AFD7085 /* DiagnosticsLogger.swift in Sources */,
+				18881176443BAEF20A6493BC /* ExtensionTransportAdapters.swift in Sources */,
+				E75F9E8D51033A73EDB07133 /* FeatureFlags.swift in Sources */,
+				953CC97B1E296EDE15EADD52 /* HandoffBroker.swift in Sources */,
+				908929BE64D1455CC95B0833 /* Models.swift in Sources */,
+				AAAA413B9ACF886963B4E7BB /* ModuleBoundarySentinel.swift in Sources */,
+				B2C01CF76232ABDA0487961C /* OpenExecutor.swift in Sources */,
+				5966E5C7AF48DB9776A17B45 /* Placeholder.swift in Sources */,
+				28BAFEC43CD5C3735885CA8E /* ProfileWorkspaceModelsV2.swift in Sources */,
+				C1716BC7A41EE91E98770995 /* ProfileWorkspaceStore.swift in Sources */,
+				50B60FEFFBDBA93F405833E1 /* RequestQueue.swift in Sources */,
+				8C50119131342DB1F3EDD9F5 /* RootView.swift in Sources */,
+				D5A2F70CE8772B109ECFB4E7 /* RoutingCoordinator.swift in Sources */,
+				2691A9CE5F1031CA8B9AD4BB /* RoutingDecision.swift in Sources */,
+				F6E3BCA04DDB36802F7573A3 /* RoutingEngine.swift in Sources */,
+				FF120E298E0360F14035C51F /* RoutingRequest.swift in Sources */,
+				97ED88381EDF1BC21D88371A /* RuleEngineV2.swift in Sources */,
+				438D06B638A8FED6723381C4 /* RuleSchemaV1.swift in Sources */,
+				472A2B10D9CFE87C7EF0FB54 /* RuleSchemaV2.swift in Sources */,
+				31B4180549B663CF87298566 /* RuleStore.swift in Sources */,
+				DB0C77BAA0DD4FF2C28A7BF2 /* SettingsView.swift in Sources */,
+				6F382DD6137811F640AF5868 /* TargetDiscovery.swift in Sources */,
+				8766DFE031518D5F7ABBB471 /* URLRewritePipelineV2.swift in Sources */,
+				BB74227297A0B7CE0A0C2EB3 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95D5945DAB989DFFCC0BFDD2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7065570827BFA26688695C7 /* ChooseBrowserTests.swift in Sources */,
+				BF8CA5F6A04CC9BCC47EF13A /* ContractSurfaceTests.swift in Sources */,
+				39B07A03D6E064F556295166 /* FilePredicateRuleTests.swift in Sources */,
+				E9E4A8013A0B1D9527306755 /* HandoffBrokerTests.swift in Sources */,
+				E00A4A163F48016966876D8A /* InboundRequestV2Tests.swift in Sources */,
+				82CE9AF0869619B7D28F02BE /* MultiTargetExecutionTests.swift in Sources */,
+				4E99AAAC12E264A2997AAA32 /* OpenExecutorTests.swift in Sources */,
+				7A840313FBBDF257394E9F67 /* ProfileWorkspaceStoreTests.swift in Sources */,
+				646671A833B5C0E9563B5FE7 /* RequestQueueTests.swift in Sources */,
+				1C1F2F3A69D4F39B1C45F6BE /* RoutingEngineTests.swift in Sources */,
+				92787B621C00B49EB489A483 /* RuleEngineV2DeterminismTests.swift in Sources */,
+				C769BED1CA68DC99CCFE60B3 /* RuleSchemaV2MigrationTests.swift in Sources */,
+				F0A1576B7CC48FD8D51D6484 /* RuleStoreTests.swift in Sources */,
+				8FF699BAC5AA0EDD41E4A71D /* TargetDiscoveryCapabilityTests.swift in Sources */,
+				70EC7BD2CFFD29F2ADC5D6B6 /* TargetDiscoveryTests.swift in Sources */,
+				0D10144BB8D7858683FFEB28 /* URLRewritePipelineTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97A7531393E18AE7293A944F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DAD72C1FE1D7E7284F4007D /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9993286643835D8A03574F70 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B586EDB7AAECB9A5946F9B4 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC34B6CECBDA73CBA447F97C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				487298358320C1D4D146726C /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C2363DE69EC015C44E4B581C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C99B1DD28173095924A7D089 /* BrowserSupportMatrixIntegrationTests.swift in Sources */,
+				DB1A5304466C1D2FEC4FBDC2 /* ExtensionTransportIntegrationTests.swift in Sources */,
+				861495EFD73859EBF6DB7B50 /* InboundObjectIntakeIntegrationTests.swift in Sources */,
+				C5DCFCC79B24AB02BA92583D /* RoutingShadowComparisonTests.swift in Sources */,
+				557BD7A29A1E7F3647EA51DE /* URLForwardingIntegrationTests.swift in Sources */,
+				61001288A459BCF323AAEF3E /* URLRewritePipelineIntegrationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6E6CE69FDEDD41FC68628508 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B00F74B5261166D8C1F1136 /* LinkSink */;
+			targetProxy = 0076B1C168B4809C70AFF9BC /* PBXContainerItemProxy */;
+		};
+		6FD4755FAEFE74555D258B96 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8EF02937B09256BC08E1AC64 /* ChooseBrowser */;
+			targetProxy = 7F03DC9AA7E0D7DD393ABEC3 /* PBXContainerItemProxy */;
+		};
+		94BB2A612E36D16D90A369BB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8EF02937B09256BC08E1AC64 /* ChooseBrowser */;
+			targetProxy = 69C974204B1C86F999507CA8 /* PBXContainerItemProxy */;
+		};
+		EF8F3513FD5EB5AF6C6BF35A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8EF02937B09256BC08E1AC64 /* ChooseBrowser */;
+			targetProxy = 3341B46B1A6D9DB725547E8F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		26F6565F3B56A3B1A73C0EA2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		338000009C3CDC9CE2584440 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Integration/LinkSink/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.linksink;
+				PRODUCT_NAME = LinkSink;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		3D7FB81861FCD58202A41D57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Integration/LinkSink/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.linksink;
+				PRODUCT_NAME = LinkSink;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		3FC3FFBB65E2A94981EF606E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.nativemessaginghost;
+				PRODUCT_NAME = NativeMessagingHost;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5426EF0F3005C64CBD07AC2D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.nativemessaginghost;
+				PRODUCT_NAME = NativeMessagingHost;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		58FA635A12280BA546E0A165 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.tests;
+				PRODUCT_NAME = ChooseBrowserTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChooseBrowser.app/Contents/MacOS/ChooseBrowser";
+			};
+			name = Release;
+		};
+		72FD4835CDBC020EBC61B152 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.integrationtests;
+				PRODUCT_NAME = ChooseBrowserIntegrationTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChooseBrowser.app/Contents/MacOS/ChooseBrowser";
+			};
+			name = Debug;
+		};
+		7BB6F5CFC894713203165937 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.safaribridgehost;
+				PRODUCT_NAME = SafariBridgeHost;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		84EAC8478CBE211016A8E3F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A27B5519DF11A720E13073FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.uitests;
+				PRODUCT_NAME = ChooseBrowserUITests;
+				SDKROOT = macosx;
+				TEST_TARGET_NAME = ChooseBrowser;
+			};
+			name = Debug;
+		};
+		ADF213BAD222DF1BD207D23C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.integrationtests;
+				PRODUCT_NAME = ChooseBrowserIntegrationTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChooseBrowser.app/Contents/MacOS/ChooseBrowser";
+			};
+			name = Release;
+		};
+		B737945ABB11EA9FB05038AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.app;
+				PRODUCT_NAME = ChooseBrowser;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B99743E097D0325FF195E1B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.safaribridgehost;
+				PRODUCT_NAME = SafariBridgeHost;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CE2021042880A604E1BA854C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.tests;
+				PRODUCT_NAME = ChooseBrowserTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChooseBrowser.app/Contents/MacOS/ChooseBrowser";
+			};
+			name = Debug;
+		};
+		D2428BB9115AA17E8078096B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.uitests;
+				PRODUCT_NAME = ChooseBrowserUITests;
+				SDKROOT = macosx;
+				TEST_TARGET_NAME = ChooseBrowser;
+			};
+			name = Release;
+		};
+		EF7882613331DB2AFA610FD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.choosebrowser.app;
+				PRODUCT_NAME = ChooseBrowser;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		10B78BC7FD0FEE8A34368D44 /* Build configuration list for PBXNativeTarget "ChooseBrowserUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A27B5519DF11A720E13073FD /* Debug */,
+				D2428BB9115AA17E8078096B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2CFFA6DFF27C847BEBEC9E08 /* Build configuration list for PBXNativeTarget "LinkSink" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				338000009C3CDC9CE2584440 /* Debug */,
+				3D7FB81861FCD58202A41D57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4704F780B578A13421322695 /* Build configuration list for PBXProject "ChooseBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26F6565F3B56A3B1A73C0EA2 /* Debug */,
+				84EAC8478CBE211016A8E3F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		72BD0CF520EBCE31C67E8496 /* Build configuration list for PBXNativeTarget "SafariBridgeHost" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B99743E097D0325FF195E1B1 /* Debug */,
+				7BB6F5CFC894713203165937 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A178DFA84C7B8A9227C455BC /* Build configuration list for PBXNativeTarget "ChooseBrowserTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE2021042880A604E1BA854C /* Debug */,
+				58FA635A12280BA546E0A165 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B7A99C0AFC13B5833B4F43DF /* Build configuration list for PBXNativeTarget "NativeMessagingHost" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5426EF0F3005C64CBD07AC2D /* Debug */,
+				3FC3FFBB65E2A94981EF606E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BB0D6F268FBFCC52662E396F /* Build configuration list for PBXNativeTarget "ChooseBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B737945ABB11EA9FB05038AE /* Debug */,
+				EF7882613331DB2AFA610FD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EADEE486B85B5A636DAE19A5 /* Build configuration list for PBXNativeTarget "ChooseBrowserIntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72FD4835CDBC020EBC61B152 /* Debug */,
+				ADF213BAD222DF1BD207D23C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FCA50E6953307CCC3BAFEBE7 /* Project object */;
+}

@@ -1,0 +1,79 @@
+name: release
+
+on:
+  pull_request:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build App
+        run: bash scripts/release/build-app.sh
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: choosebrowser-app
+          path: |
+            build/ChooseBrowser.app
+            build/ChooseBrowser.dmg
+          if-no-files-found: error
+
+  sign-check:
+    runs-on: macos-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build App
+        run: bash scripts/release/build-app.sh
+
+      - name: Verify Signing
+        run: bash scripts/release/verify-signing.sh build/ChooseBrowser.app
+
+  notarize:
+    runs-on: macos-latest
+    needs: sign-check
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build App
+        run: bash scripts/release/build-app.sh
+
+      - name: Notarize App
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: bash scripts/release/notarize.sh
+
+  artifact-upload:
+    runs-on: macos-latest
+    needs:
+      - build
+      - sign-check
+    if: always() && needs.build.result == 'success' && needs.sign-check.result == 'success'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build App
+        run: bash scripts/release/build-app.sh
+
+      - name: Upload Release Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: choosebrowser-release
+          path: |
+            build/ChooseBrowser.app
+            build/ChooseBrowser.dmg
+          if-no-files-found: error
