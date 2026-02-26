@@ -11,3 +11,7 @@ DerivedData/
 .sisyphus/evidence/
 .sisyphus/
 thoughts/
+
+# Xcode user state
+**/xcuserdata/
+*.xcuserstate
