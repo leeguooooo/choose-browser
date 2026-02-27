@@ -22,6 +22,7 @@ When behavior is unexpected, use this sequence:
 3. **Release pipeline checks**
    - `bash scripts/release/build-app.sh`
    - `bash scripts/release/verify-signing.sh build/ChooseBrowser.app`
+   - Confirm `build/ChooseBrowser.dmg` and `build/ChooseBrowser.pkg` are produced
 4. **Diagnostics export**
    - `scripts/evidence/collect.sh`
    - Inspect generated `.sisyphus/evidence/*.log` artifacts
@@ -59,7 +60,7 @@ Evidence collection helper outputs:
 ## Release Checklist
 
 1. Run full unit + integration test suites.
-2. Build release artifact with `scripts/release/build-app.sh`.
+2. Build release artifact with `scripts/release/build-app.sh` (app + dmg + pkg).
 3. Verify signing with `scripts/release/verify-signing.sh`.
 4. Validate notarization prerequisites with `scripts/release/notarize.sh --dry-run`.
 5. Run `scripts/evidence/collect.sh` and archive evidence logs.

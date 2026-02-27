@@ -38,7 +38,7 @@ See `docs/runbook.md` for troubleshooting and evidence requirements.
 
 ## Release
 
-- Build notarization-ready app and DMG:
+- Build notarization-ready app, DMG, and PKG:
   - `bash scripts/release/build-app.sh`
 - Verify signing:
   - `bash scripts/release/verify-signing.sh build/ChooseBrowser.app`

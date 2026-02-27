@@ -23,6 +23,7 @@ jobs:
           path: |
             build/ChooseBrowser.app
             build/ChooseBrowser.dmg
+            build/ChooseBrowser.pkg
           if-no-files-found: error
 
   sign-check:
@@ -76,4 +77,5 @@ jobs:
           path: |
             build/ChooseBrowser.app
             build/ChooseBrowser.dmg
+            build/ChooseBrowser.pkg
           if-no-files-found: error

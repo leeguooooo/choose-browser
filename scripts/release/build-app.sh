@@ -10,9 +10,10 @@ DERIVED_DATA="${REPO_ROOT}/.build/deriveddata-release"
 OUTPUT_DIR="${REPO_ROOT}/build"
 APP_PATH="${OUTPUT_DIR}/ChooseBrowser.app"
 DMG_PATH="${OUTPUT_DIR}/ChooseBrowser.dmg"
+PKG_PATH="${OUTPUT_DIR}/ChooseBrowser.pkg"
 
 mkdir -p "${OUTPUT_DIR}"
-rm -rf "${APP_PATH}" "${DMG_PATH}"
+rm -rf "${APP_PATH}" "${DMG_PATH}" "${PKG_PATH}"
 
 xcodebuild \
 	-project "${PROJECT_FILE}" \
@@ -47,7 +48,16 @@ if command -v hdiutil >/dev/null 2>&1; then
 	rm -rf "${TMP_DMG_DIR}"
 fi
 
+if command -v productbuild >/dev/null 2>&1; then
+	productbuild \
+		--component "${APP_PATH}" /Applications \
+		"${PKG_PATH}" >/dev/null
+fi
+
 echo "build artifact: ${APP_PATH}"
 if [[ -f "${DMG_PATH}" ]]; then
 	echo "dmg artifact: ${DMG_PATH}"
+fi
+if [[ -f "${PKG_PATH}" ]]; then
+	echo "pkg artifact: ${PKG_PATH}"
 fi
