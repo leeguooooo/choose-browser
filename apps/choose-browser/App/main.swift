@@ -123,7 +123,7 @@ final class URLInboundPipeline {
     }
 }
 
-final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
+final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private struct UITestTargets {
         static let standard: [ExecutionTarget] = [
             ExecutionTarget(
@@ -477,6 +477,18 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
 
         func dismissUpdatePrompt() {
             updatePrompt = nil
+        }
+
+        func handleChooserWindowClosed() {
+            guard chooserSession != nil else {
+                return
+            }
+
+            lastActionMessage = "cancelled:window-closed"
+            chooserSession = nil
+            onChooserPresentationChanged?(false)
+            isProcessingRequest = false
+            processNextRequestIfNeeded()
         }
 
         func openCurrentUpdateRelease() {
@@ -1025,6 +1037,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
         window.collectionBehavior.insert(.moveToActiveSpace)
+        window.delegate = self
         window.contentView = hostingView
         window.makeKeyAndOrderFront(nil)
         self.window = window
@@ -1061,6 +1074,14 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
 
     func application(_ application: NSApplication, open url: URL) {
         inboundPipeline.handleIncoming(url: url)
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        guard let closingWindow = notification.object as? NSWindow, closingWindow === window else {
+            return
+        }
+
+        appModel?.handleChooserWindowClosed()
     }
 }
 
