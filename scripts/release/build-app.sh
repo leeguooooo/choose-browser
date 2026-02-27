@@ -35,6 +35,7 @@ if command -v hdiutil >/dev/null 2>&1; then
 	rm -rf "${TMP_DMG_DIR}"
 	mkdir -p "${TMP_DMG_DIR}"
 	ditto "${APP_PATH}" "${TMP_DMG_DIR}/ChooseBrowser.app"
+	ln -s /Applications "${TMP_DMG_DIR}/Applications"
 
 	hdiutil create \
 		-volname "ChooseBrowser" \
