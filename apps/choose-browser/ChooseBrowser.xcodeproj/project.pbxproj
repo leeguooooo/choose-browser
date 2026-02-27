@@ -71,6 +71,7 @@
 		E9E4A8013A0B1D9527306755 /* HandoffBrokerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10F02AB23F1AF1A4D2624E0E /* HandoffBrokerTests.swift */; };
 		F0A1576B7CC48FD8D51D6484 /* RuleStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE6D3B1A73DF7FECF27A5C /* RuleStoreTests.swift */; };
 		F6E3BCA04DDB36802F7573A3 /* RoutingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BF56E325BF0B9C7AC7C640 /* RoutingEngine.swift */; };
+		FC1E3DA811CEF1A302EB5FB0 /* AppIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3ACD85463BC63662D0621E /* AppIconView.swift */; };
 		FF120E298E0360F14035C51F /* RoutingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD04D85AF97FDD3F5CB4D09 /* RoutingRequest.swift */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +123,7 @@
 		39CB203BFA14B8C8170471D6 /* DiagnosticsLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsLogger.swift; sourceTree = "<group>"; };
 		3C20C59385DB6F666463127B /* TargetDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetDiscovery.swift; sourceTree = "<group>"; };
 		4489CB7CF334B961AA21F7F1 /* ProfileWorkspaceModelsV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWorkspaceModelsV2.swift; sourceTree = "<group>"; };
+		4B3ACD85463BC63662D0621E /* AppIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconView.swift; sourceTree = "<group>"; };
 		4E2A260EDBFA343CAB172DE3 /* ChooseBrowserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseBrowserApp.swift; sourceTree = "<group>"; };
 		50E5ADF209D5CB36E5E44886 /* URLForwardingIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLForwardingIntegrationTests.swift; sourceTree = "<group>"; };
 		544B84F02A1EEB91470A3E52 /* ProfileWorkspaceChooserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWorkspaceChooserTests.swift; sourceTree = "<group>"; };
@@ -197,6 +199,14 @@
 			path = Tests/ChooseBrowserUITests;
 			sourceTree = "<group>";
 		};
+		11B99A6C81C0EE18A781699F /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				4B3ACD85463BC63662D0621E /* AppIconView.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		171363608B1179719B6D0E15 /* Execution */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,6 +251,7 @@
 				FAC2C763671361FECB0B7215 /* Chooser */,
 				CFC7F29FFDF18C7810EF39F9 /* Onboarding */,
 				96D490ED57AD21C88B82388E /* Settings */,
+				11B99A6C81C0EE18A781699F /* Support */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -610,6 +621,7 @@
 			files = (
 				A74F440FBD4248E6086B7AB9 /* AccessibilityIdentifiers.swift in Sources */,
 				63217F4F5B5A9B1408BAA2BF /* AdvancedConfigurationView.swift in Sources */,
+				FC1E3DA811CEF1A302EB5FB0 /* AppIconView.swift in Sources */,
 				D604AF252DFF43B5C7C4C35F /* AppSettingsStore.swift in Sources */,
 				8F0DDD7632201EE5320337D6 /* ChooseBrowserApp.swift in Sources */,
 				11E104B7709E5CE3A3345EA3 /* ChooserView.swift in Sources */,
