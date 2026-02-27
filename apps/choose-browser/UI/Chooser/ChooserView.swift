@@ -52,16 +52,24 @@ struct ChooserView: View {
     var body: some View {
         VStack(spacing: 0) {
             // URL Header
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Open with...")
-                    .font(.headline)
-                    .foregroundColor(.primary)
+            HStack(spacing: 12) {
+                if let appIcon = NSApp.applicationIconImage {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                }
                 
-                Text(url.absoluteString)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-                    .truncationMode(.middle)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("ChooseBrowser")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    Text(url.absoluteString)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)

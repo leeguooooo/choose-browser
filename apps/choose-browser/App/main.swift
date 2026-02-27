@@ -688,7 +688,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
             window.setFrame(frame, display: true)
             
             positionWindowNearMouse(window)
-            NSApplication.shared.activate(ignoringOtherApps: true)
+            NSRunningApplication.current.activate(options: [.activateAllWindows, .activateIgnoringOtherApps])
             window.orderFrontRegardless()
             window.makeKeyAndOrderFront(nil)
             return
@@ -844,6 +844,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
         window.title = "ChooseBrowser"
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
+        window.collectionBehavior.insert(.moveToActiveSpace)
         window.contentView = hostingView
         window.makeKeyAndOrderFront(nil)
         self.window = window
