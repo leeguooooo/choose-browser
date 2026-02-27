@@ -262,6 +262,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
         private let uiTestTargets: [ExecutionTarget]?
         private let autoQuitOnSuccessfulDispatch: Bool
         private let releaseFeedURL = URL(string: "https://api.github.com/repos/leeguooooo/choose-browser/releases/latest")!
+        private var chooserOrderBundleIdentifiers: [String]
         private var isProcessingRequest = false
         private var isCheckingForUpdates = false
         private let burstWindow: TimeInterval = 0.5
@@ -298,6 +299,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
             self.autoQuitOnSuccessfulDispatch = autoQuitOnSuccessfulDispatch
             self.fallbackBundleIdentifier = settingsStore.fallbackBundleIdentifier
             self.hiddenBundleIdentifiers = settingsStore.hiddenBundleIdentifiers
+            self.chooserOrderBundleIdentifiers = settingsStore.chooserOrderBundleIdentifiers
             self.defaultHandlerSnapshot = handlerInspector.snapshot(appBundleIdentifier: appBundleIdentifier)
 
             applySettingsToDiscovery()
@@ -704,7 +706,8 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
                 return
             }
 
-            let chooserTargets = discoveredTargets.map {
+            let orderedDiscoveredTargets = applyChooserOrder(to: discoveredTargets)
+            let chooserTargets = orderedDiscoveredTargets.map {
                 ChooserTarget(
                     id: $0.bundleIdentifier,
                     displayName: $0.displayName,
@@ -715,19 +718,21 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
             let viewModel = ChooserViewModel(
                 targets: chooserTargets,
                 onOpenOnce: { [weak self] target in
+                    let latestDiscoveredTargets = self?.applyChooserOrder(to: orderedDiscoveredTargets) ?? orderedDiscoveredTargets
                     self?.executeOpen(
                         requestURLs: requestURLs,
                         preferredBundleIdentifier: target.id,
-                        discoveredTargets: discoveredTargets,
+                        discoveredTargets: latestDiscoveredTargets,
                         rememberTargetForHost: nil,
                         shouldTerminateOnSuccess: true
                     )
                 },
                 onRememberForHost: { [weak self] target in
+                    let latestDiscoveredTargets = self?.applyChooserOrder(to: orderedDiscoveredTargets) ?? orderedDiscoveredTargets
                     self?.executeOpen(
                         requestURLs: requestURLs,
                         preferredBundleIdentifier: target.id,
-                        discoveredTargets: discoveredTargets,
+                        discoveredTargets: latestDiscoveredTargets,
                         rememberTargetForHost: target.id,
                         shouldTerminateOnSuccess: true
                     )
@@ -740,19 +745,23 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
                     self?.processNextRequestIfNeeded()
                 },
                 onOpenFallback: { [weak self] in
+                    let latestDiscoveredTargets = self?.applyChooserOrder(to: orderedDiscoveredTargets) ?? orderedDiscoveredTargets
                     self?.executeOpen(
                         requestURLs: requestURLs,
                         preferredBundleIdentifier: nil,
-                        discoveredTargets: discoveredTargets,
+                        discoveredTargets: latestDiscoveredTargets,
                         rememberTargetForHost: nil,
                         shouldTerminateOnSuccess: true
                     )
+                },
+                onOrderChanged: { [weak self] updatedTargets in
+                    self?.persistChooserOrder(from: updatedTargets)
                 }
             )
 
             chooserSession = ChooserSession(
                 requestURLs: requestURLs,
-                discoveredTargets: discoveredTargets,
+                discoveredTargets: orderedDiscoveredTargets,
                 viewModel: viewModel
             )
             onChooserPresentationChanged?(true)
@@ -760,6 +769,35 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
             if requestURLs.count > 1 {
                 lastActionMessage = "batch-size:\(requestURLs.count)"
             }
+        }
+
+        private func applyChooserOrder(to discoveredTargets: [ExecutionTarget]) -> [ExecutionTarget] {
+            guard !chooserOrderBundleIdentifiers.isEmpty else {
+                return discoveredTargets
+            }
+
+            var remainingByBundleIdentifier: [String: ExecutionTarget] = [:]
+            discoveredTargets.forEach { remainingByBundleIdentifier[$0.bundleIdentifier] = $0 }
+            var orderedTargets: [ExecutionTarget] = []
+
+            for bundleIdentifier in chooserOrderBundleIdentifiers {
+                guard let target = remainingByBundleIdentifier.removeValue(forKey: bundleIdentifier) else {
+                    continue
+                }
+
+                orderedTargets.append(target)
+            }
+
+            for target in discoveredTargets where remainingByBundleIdentifier[target.bundleIdentifier] != nil {
+                orderedTargets.append(target)
+            }
+
+            return orderedTargets
+        }
+
+        private func persistChooserOrder(from targets: [ChooserTarget]) {
+            chooserOrderBundleIdentifiers = targets.map(\.id)
+            settingsStore.chooserOrderBundleIdentifiers = chooserOrderBundleIdentifiers
         }
 
         private func executeBatchOpen(

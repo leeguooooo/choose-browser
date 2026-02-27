@@ -14,11 +14,12 @@ final class ChooserViewModel: ObservableObject {
         }
     }
 
-    private let allTargets: [ChooserTarget]
+    private var allTargets: [ChooserTarget]
     private let onOpenOnce: (ChooserTarget) -> Void
     private let onRememberForHost: (ChooserTarget) -> Void
     private let onCancel: () -> Void
     private let onOpenFallback: () -> Void
+    private let onOrderChanged: ([ChooserTarget]) -> Void
 
     private(set) var selectedIndex: Int = 0
 
@@ -27,13 +28,15 @@ final class ChooserViewModel: ObservableObject {
         onOpenOnce: @escaping (ChooserTarget) -> Void,
         onRememberForHost: @escaping (ChooserTarget) -> Void,
         onCancel: @escaping () -> Void,
-        onOpenFallback: @escaping () -> Void
+        onOpenFallback: @escaping () -> Void,
+        onOrderChanged: @escaping ([ChooserTarget]) -> Void = { _ in }
     ) {
         self.allTargets = targets
         self.onOpenOnce = onOpenOnce
         self.onRememberForHost = onRememberForHost
         self.onCancel = onCancel
         self.onOpenFallback = onOpenFallback
+        self.onOrderChanged = onOrderChanged
     }
 
     var filteredTargets: [ChooserTarget] {
@@ -113,6 +116,35 @@ final class ChooserViewModel: ObservableObject {
 
     func triggerOpenFallback() {
         onOpenFallback()
+    }
+
+    func moveTarget(draggedTargetID: String, over targetID: String) {
+        guard searchQuery.isEmpty else {
+            return
+        }
+
+        guard let sourceIndex = allTargets.firstIndex(where: { $0.id == draggedTargetID }),
+              let destinationIndex = allTargets.firstIndex(where: { $0.id == targetID }),
+              sourceIndex != destinationIndex
+        else {
+            return
+        }
+
+        let moved = allTargets.remove(at: sourceIndex)
+        let insertionIndex = destinationIndex
+        allTargets.insert(moved, at: insertionIndex)
+
+        if selectedIndex == sourceIndex {
+            selectedIndex = insertionIndex
+        } else if sourceIndex < selectedIndex, selectedIndex <= insertionIndex {
+            selectedIndex -= 1
+        } else if insertionIndex <= selectedIndex, selectedIndex < sourceIndex {
+            selectedIndex += 1
+        }
+
+        clampSelection()
+        onOrderChanged(allTargets)
+        objectWillChange.send()
     }
 
     private func clampSelection() {

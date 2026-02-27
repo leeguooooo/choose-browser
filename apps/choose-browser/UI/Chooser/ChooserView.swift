@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 private struct KeyDownMonitor: ViewModifier {
     let onKeyDown: (NSEvent) -> Bool
@@ -45,9 +46,33 @@ struct VisualEffectView: NSViewRepresentable {
 }
 
 struct ChooserView: View {
+    private struct TargetDropDelegate: DropDelegate {
+        let targetID: String
+        @Binding var draggedTargetID: String?
+        let onMove: (String, String) -> Void
+
+        func dropEntered(info _: DropInfo) {
+            guard let draggedTargetID, draggedTargetID != targetID else {
+                return
+            }
+
+            onMove(draggedTargetID, targetID)
+        }
+
+        func performDrop(info _: DropInfo) -> Bool {
+            draggedTargetID = nil
+            return true
+        }
+
+        func dropUpdated(info _: DropInfo) -> DropProposal? {
+            DropProposal(operation: .move)
+        }
+    }
+
     let url: URL
     @ObservedObject var viewModel: ChooserViewModel
     @FocusState private var isSearchFieldFocused: Bool
+    @State private var draggedTargetID: String?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -234,6 +259,20 @@ struct ChooserView: View {
             )
         }
         .buttonStyle(.plain)
+        .onDrag {
+            draggedTargetID = target.id
+            return NSItemProvider(object: target.id as NSString)
+        }
+        .onDrop(
+            of: [UTType.text],
+            delegate: TargetDropDelegate(
+                targetID: target.id,
+                draggedTargetID: $draggedTargetID,
+                onMove: { draggedID, targetID in
+                    viewModel.moveTarget(draggedTargetID: draggedID, over: targetID)
+                }
+            )
+        )
     }
 
     private func shortcutHint(key: String, label: String) -> some View {

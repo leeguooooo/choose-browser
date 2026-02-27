@@ -54,11 +54,13 @@ final class ChooseBrowserAppModelTests: XCTestCase {
     private final class TestSettingsStore: AppSettingsStoring {
         var fallbackBundleIdentifier: String?
         var hiddenBundleIdentifiers: Set<String> = []
+        var chooserOrderBundleIdentifiers: [String] = []
         var ignoredUpdateVersion: String?
 
         func reset() {
             fallbackBundleIdentifier = nil
             hiddenBundleIdentifiers = []
+            chooserOrderBundleIdentifiers = []
             ignoredUpdateVersion = nil
         }
     }
