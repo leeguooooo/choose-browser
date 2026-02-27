@@ -7,8 +7,6 @@ struct RootView: View {
     var body: some View {
         if let session = appModel.chooserSession {
             ChooserView(url: session.requestURLs.first ?? placeholderURL, viewModel: session.viewModel)
-                .padding(8)
-                .frame(minWidth: 360, minHeight: 260)
         } else if appModel.showAdvancedPanel {
             advancedDashboardView
         } else {

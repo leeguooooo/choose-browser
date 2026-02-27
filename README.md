@@ -44,3 +44,8 @@ See `docs/runbook.md` for troubleshooting and evidence requirements.
   - `APPLE_ID=... APPLE_TEAM_ID=... APPLE_APP_PASSWORD=... bash scripts/release/notarize.sh --dry-run`
 - Full release workflow is defined at:
   - `.github/workflows/release.yml`
+
+## SSO / Portal
+
+- Integration note for `app.misonote.com` and unified SSO membership:
+  - `docs/SSO_PORTAL_INTEGRATION.md`

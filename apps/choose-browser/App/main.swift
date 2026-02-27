@@ -679,6 +679,14 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
 
         if isChooserPresented {
             window.level = .statusBar
+            
+            // Resize window to fit ChooserView
+            let chooserWidth: CGFloat = 420
+            let chooserHeight: CGFloat = 480 // Approximate height for URL + Search + List + Footer
+            var frame = window.frame
+            frame.size = NSSize(width: chooserWidth, height: chooserHeight)
+            window.setFrame(frame, display: true)
+            
             positionWindowNearMouse(window)
             NSApplication.shared.activate(ignoringOtherApps: true)
             window.orderFrontRegardless()
@@ -828,12 +836,14 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
         let initialWindowHeight: CGFloat = showAdvancedPanel ? 780 : 260
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: initialWindowWidth, height: initialWindowHeight),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable],
+            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
         window.center()
         window.title = "ChooseBrowser"
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
         window.contentView = hostingView
         window.makeKeyAndOrderFront(nil)
         self.window = window
