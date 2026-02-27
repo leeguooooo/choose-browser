@@ -21,6 +21,7 @@ targets:
       - path: Store
       - path: UI
       - path: Support
+      - path: UI/Assets.xcassets
     info:
       path: App/Info.plist
       properties:
@@ -45,6 +46,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.choosebrowser.app
         PRODUCT_NAME: ChooseBrowser
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
   LinkSink:
     type: application
     platform: macOS
