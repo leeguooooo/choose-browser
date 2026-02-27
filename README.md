@@ -2,6 +2,8 @@
 
 ChooseBrowser is a native macOS app that handles `http/https` links and routes them to the selected browser with deterministic fallback behavior.
 
+[Image]<img width="673" height="540" alt="image" src="https://github.com/user-attachments/assets/5d3db876-5a8b-4bed-bc39-409103e3f66f" />
+
 ## Architecture
 
 - `apps/choose-browser/App`: app lifecycle and inbound URL handling
