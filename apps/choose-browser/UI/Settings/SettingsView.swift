@@ -4,9 +4,11 @@ struct SettingsView: View {
     let candidates: [ExecutionTarget]
     let fallbackBundleIdentifier: String?
     let hiddenBundleIdentifiers: Set<String>
+    let updateStatusMessage: String?
     let onSelectFallback: (String?) -> Void
     let onToggleHidden: (String, Bool) -> Void
     let onRunFallbackProbe: () -> Void
+    let onCheckForUpdates: () -> Void
     let onSetAsDefaultBrowser: () -> Void
     let isDefaultBrowserSet: Bool
 
@@ -71,6 +73,11 @@ struct SettingsView: View {
                 .accessibilityIdentifier(AccessibilityIdentifiers.settingsRunFallbackProbeButton)
                 .disabled(candidates.isEmpty)
 
+                Button("Check for Updates") {
+                    onCheckForUpdates()
+                }
+                .accessibilityIdentifier(AccessibilityIdentifiers.settingsCheckForUpdatesButton)
+
                 Button(setDefaultButtonTitle) {
                     onSetAsDefaultBrowser()
                 }
@@ -78,6 +85,12 @@ struct SettingsView: View {
                 .disabled(isDefaultBrowserSet)
 
                 Spacer(minLength: 0)
+            }
+
+            if let updateStatusMessage, !updateStatusMessage.isEmpty {
+                Text(updateStatusMessage)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
         }
         .padding(12)

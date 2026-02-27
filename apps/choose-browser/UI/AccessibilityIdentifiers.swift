@@ -21,6 +21,7 @@ enum AccessibilityIdentifiers {
     static let settingsSelectedFallbackLabel = "settings.selectedFallbackLabel"
     static let settingsRunFallbackProbeButton = "settings.runFallbackProbeButton"
     static let settingsSetAsDefaultButton = "settings.setAsDefaultButton"
+    static let settingsCheckForUpdatesButton = "settings.checkForUpdatesButton"
     static let ruleEditorDomainField = "ruleEditor.domainField"
     static let ruleEditorPathField = "ruleEditor.pathField"
     static let ruleEditorDispatchSingle = "ruleEditor.dispatch.single"

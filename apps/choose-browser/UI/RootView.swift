@@ -5,12 +5,40 @@ struct RootView: View {
     private let placeholderURL = URL(string: "https://example.com")!
 
     var body: some View {
-        if let session = appModel.chooserSession {
-            ChooserView(url: session.requestURLs.first ?? placeholderURL, viewModel: session.viewModel)
-        } else if appModel.showAdvancedPanel {
-            advancedDashboardView
-        } else {
-            controlPanelView
+        Group {
+            if let session = appModel.chooserSession {
+                ChooserView(url: session.requestURLs.first ?? placeholderURL, viewModel: session.viewModel)
+            } else if appModel.showAdvancedPanel {
+                advancedDashboardView
+            } else {
+                controlPanelView
+            }
+        }
+        .confirmationDialog(
+            "New Version Available",
+            isPresented: Binding(
+                get: { appModel.updatePrompt != nil },
+                set: { isPresented in
+                    if !isPresented {
+                        appModel.dismissUpdatePrompt()
+                    }
+                }
+            ),
+            presenting: appModel.updatePrompt
+        ) { _ in
+            Button("Download") {
+                appModel.openCurrentUpdateRelease()
+            }
+
+            Button("Ignore This Version", role: .destructive) {
+                appModel.ignoreCurrentUpdateVersion()
+            }
+
+            Button("Later", role: .cancel) {
+                appModel.dismissUpdatePrompt()
+            }
+        } message: { prompt in
+            Text("v\(prompt.version) is available.")
         }
     }
 
@@ -68,6 +96,7 @@ struct RootView: View {
                 candidates: appModel.settingsCandidates,
                 fallbackBundleIdentifier: appModel.fallbackBundleIdentifier,
                 hiddenBundleIdentifiers: appModel.hiddenBundleIdentifiers,
+                updateStatusMessage: appModel.updateStatusMessage,
                 onSelectFallback: { bundleIdentifier in
                     appModel.selectFallbackBundleIdentifier(bundleIdentifier)
                 },
@@ -76,6 +105,9 @@ struct RootView: View {
                 },
                 onRunFallbackProbe: {
                     appModel.runFallbackProbe()
+                },
+                onCheckForUpdates: {
+                    appModel.checkForUpdates(manual: true)
                 },
                 onSetAsDefaultBrowser: {
                     appModel.setAsDefaultBrowser()

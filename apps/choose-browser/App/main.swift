@@ -207,11 +207,36 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
             let viewModel: ChooserViewModel
         }
 
+        struct UpdatePromptState: Identifiable, Equatable {
+            let version: String
+            let releaseURL: URL
+
+            var id: String {
+                version
+            }
+        }
+
+        private struct LatestReleasePayload: Decodable {
+            let tagName: String
+            let htmlURL: URL
+            let draft: Bool
+            let prerelease: Bool
+
+            enum CodingKeys: String, CodingKey {
+                case tagName = "tag_name"
+                case htmlURL = "html_url"
+                case draft
+                case prerelease
+            }
+        }
+
         @Published var chooserSession: ChooserSession?
         @Published var lastActionMessage: String = "idle"
         @Published var defaultHandlerSnapshot: DefaultHandlerSnapshot
         @Published var fallbackBundleIdentifier: String?
         @Published var hiddenBundleIdentifiers: Set<String>
+        @Published var updatePrompt: UpdatePromptState?
+        @Published var updateStatusMessage: String?
         @Published var settingsCandidates: [ExecutionTarget] = []
         @Published var advancedRuleDomain: String = ""
         @Published var advancedRulePath: String = ""
@@ -236,7 +261,9 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
         private let appBundleIdentifier: String
         private let uiTestTargets: [ExecutionTarget]?
         private let autoQuitOnSuccessfulDispatch: Bool
+        private let releaseFeedURL = URL(string: "https://api.github.com/repos/leeguooooo/choose-browser/releases/latest")!
         private var isProcessingRequest = false
+        private var isCheckingForUpdates = false
         private let burstWindow: TimeInterval = 0.5
         var onChooserPresentationChanged: ((Bool) -> Void)?
         var onSuccessfulDispatch: (() -> Void)?
@@ -415,6 +442,64 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
             defaultHandlerSnapshot = handlerInspector.snapshot(appBundleIdentifier: appBundleIdentifier)
         }
 
+        func checkForUpdates(manual: Bool = false) {
+            if isCheckingForUpdates {
+                return
+            }
+
+            isCheckingForUpdates = true
+
+            if manual {
+                updateStatusMessage = "Checking for updates..."
+            }
+
+            Task { [weak self] in
+                guard let self else {
+                    return
+                }
+
+                let result = await Self.fetchLatestRelease(from: releaseFeedURL)
+
+                await MainActor.run {
+                    self.isCheckingForUpdates = false
+
+                    switch result {
+                    case let .success(release):
+                        self.handleLatestRelease(release, manual: manual)
+                    case .failure:
+                        if manual {
+                            self.updateStatusMessage = "Failed to check updates."
+                        }
+                    }
+                }
+            }
+        }
+
+        func dismissUpdatePrompt() {
+            updatePrompt = nil
+        }
+
+        func openCurrentUpdateRelease() {
+            guard let updatePrompt else {
+                return
+            }
+
+            NSWorkspace.shared.open(updatePrompt.releaseURL)
+            lastActionMessage = "update-opened:\(updatePrompt.version)"
+            self.updatePrompt = nil
+        }
+
+        func ignoreCurrentUpdateVersion() {
+            guard let updatePrompt else {
+                return
+            }
+
+            settingsStore.ignoredUpdateVersion = updatePrompt.version
+            updateStatusMessage = "Ignored v\(updatePrompt.version)."
+            lastActionMessage = "update-ignored:\(updatePrompt.version)"
+            self.updatePrompt = nil
+        }
+
         private func handle(requestURLs: [URL]) {
             guard let primaryURL = requestURLs.first else {
                 isProcessingRequest = false
@@ -451,6 +536,101 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
                 lastActionMessage = "fallback:\(reason)"
                 isProcessingRequest = false
                 processNextRequestIfNeeded()
+            }
+        }
+
+        private func handleLatestRelease(_ release: LatestReleasePayload, manual: Bool) {
+            guard !release.draft, !release.prerelease else {
+                if manual {
+                    updateStatusMessage = "No stable update found."
+                }
+                return
+            }
+
+            let latestVersion = Self.normalizedVersion(release.tagName)
+            guard !latestVersion.isEmpty else {
+                if manual {
+                    updateStatusMessage = "Invalid version from update feed."
+                }
+                return
+            }
+
+            let currentVersion = Self.currentVersionString()
+            let compareResult = Self.compareVersions(latestVersion, currentVersion)
+
+            if compareResult <= 0 {
+                if manual {
+                    updateStatusMessage = "You're up to date (v\(currentVersion))."
+                }
+                return
+            }
+
+            updateStatusMessage = "New version available: v\(latestVersion)."
+
+            if !manual, settingsStore.ignoredUpdateVersion == latestVersion {
+                return
+            }
+
+            updatePrompt = UpdatePromptState(version: latestVersion, releaseURL: release.htmlURL)
+        }
+
+        private static func currentVersionString() -> String {
+            let raw = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
+            return normalizedVersion(raw)
+        }
+
+        private static func normalizedVersion(_ raw: String) -> String {
+            raw
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .replacingOccurrences(of: #"^[vV]"#, with: "", options: .regularExpression)
+        }
+
+        private static func compareVersions(_ lhs: String, _ rhs: String) -> Int {
+            let lhsComponents = numericComponents(from: lhs)
+            let rhsComponents = numericComponents(from: rhs)
+            let maxCount = max(lhsComponents.count, rhsComponents.count)
+
+            for index in 0 ..< maxCount {
+                let left = index < lhsComponents.count ? lhsComponents[index] : 0
+                let right = index < rhsComponents.count ? rhsComponents[index] : 0
+
+                if left < right {
+                    return -1
+                }
+
+                if left > right {
+                    return 1
+                }
+            }
+
+            return 0
+        }
+
+        private static func numericComponents(from version: String) -> [Int] {
+            version
+                .split(separator: ".")
+                .map { component -> Int in
+                    let digits = component.prefix { $0.isNumber }
+                    return Int(digits) ?? 0
+                }
+        }
+
+        private static func fetchLatestRelease(from url: URL) async -> Result<LatestReleasePayload, Error> {
+            var request = URLRequest(url: url)
+            request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+            request.setValue("ChooseBrowser", forHTTPHeaderField: "User-Agent")
+
+            do {
+                let (data, response) = try await URLSession.shared.data(for: request)
+
+                guard let httpResponse = response as? HTTPURLResponse, (200 ... 299).contains(httpResponse.statusCode) else {
+                    throw URLError(.badServerResponse)
+                }
+
+                let payload = try JSONDecoder().decode(LatestReleasePayload.self, from: data)
+                return .success(payload)
+            } catch {
+                return .failure(error)
             }
         }
 
@@ -866,6 +1046,10 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate {
                     metadata: ["path": outputURL.path, "error": String(describing: error)]
                 )
             }
+        }
+
+        if !isUITestMode {
+            model.checkForUpdates(manual: false)
         }
 
         model.processNextRequestIfNeeded()

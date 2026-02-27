@@ -3,6 +3,7 @@ import Foundation
 protocol AppSettingsStoring: AnyObject {
     var fallbackBundleIdentifier: String? { get set }
     var hiddenBundleIdentifiers: Set<String> { get set }
+    var ignoredUpdateVersion: String? { get set }
     func reset()
 }
 
@@ -10,6 +11,7 @@ final class UserDefaultsAppSettingsStore: AppSettingsStoring {
     private enum Keys {
         static let fallbackBundleIdentifier = "settings.fallbackBundleIdentifier"
         static let hiddenBundleIdentifiers = "settings.hiddenBundleIdentifiers"
+        static let ignoredUpdateVersion = "settings.ignoredUpdateVersion"
     }
 
     private let userDefaults: UserDefaults
@@ -37,8 +39,18 @@ final class UserDefaultsAppSettingsStore: AppSettingsStoring {
         }
     }
 
+    var ignoredUpdateVersion: String? {
+        get {
+            userDefaults.string(forKey: Keys.ignoredUpdateVersion)
+        }
+        set {
+            userDefaults.set(newValue, forKey: Keys.ignoredUpdateVersion)
+        }
+    }
+
     func reset() {
         userDefaults.removeObject(forKey: Keys.fallbackBundleIdentifier)
         userDefaults.removeObject(forKey: Keys.hiddenBundleIdentifiers)
+        userDefaults.removeObject(forKey: Keys.ignoredUpdateVersion)
     }
 }
