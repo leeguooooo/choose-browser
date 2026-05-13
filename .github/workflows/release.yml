@@ -43,18 +43,30 @@ jobs:
     runs-on: macos-latest
     needs: sign-check
     if: startsWith(github.ref, 'refs/tags/v')
+    env:
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check notarization credentials
+        id: notarization-credentials
+        run: |
+          if [[ -z "${APPLE_ID}" || -z "${APPLE_TEAM_ID}" || -z "${APPLE_APP_PASSWORD}" ]]; then
+            echo "available=false" >> "${GITHUB_OUTPUT}"
+            echo "::notice::Skipping notarization because APPLE_ID, APPLE_TEAM_ID, or APPLE_APP_PASSWORD is not configured."
+          else
+            echo "available=true" >> "${GITHUB_OUTPUT}"
+          fi
+
       - name: Build App
+        if: steps.notarization-credentials.outputs.available == 'true'
         run: bash scripts/release/build-app.sh
 
       - name: Notarize App
-        env:
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        if: steps.notarization-credentials.outputs.available == 'true'
         run: bash scripts/release/notarize.sh
 
   artifact-upload:

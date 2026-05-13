@@ -10,6 +10,7 @@ DerivedData/
 *.xcworkspace/xcuserdata/
 .sisyphus/evidence/
 .sisyphus/
+.omx/
 thoughts/
 
 # Xcode user state
