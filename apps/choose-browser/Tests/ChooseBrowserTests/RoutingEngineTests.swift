@@ -37,6 +37,8 @@ protocol RuleStoring {
 }
 
 struct RoutingEngine {
+    static let localFileRoutingHost = "__choosebrowser_local_file__"
+
     init(ruleStore: RuleStoring, decisionTimeout: TimeInterval = 1.5, now: @escaping () -> TimeInterval = { 0 }) {}
 
     func normalize(_ url: URL) -> (originalURL: URL, normalizedHost: String)? { nil }
@@ -124,6 +126,24 @@ final class RoutingEngineTests: XCTestCase {
     func testShowsChooserWhenNoExactHostRuleMatches() {
         let engine = RoutingEngine(ruleStore: RuleStoreStub(lookup: { _ in nil }))
         let url = URL(string: "https://example.com")!
+
+        let decision = engine.decide(for: url)
+
+        XCTAssertEqual(decision, .showChooser)
+    }
+
+    func testNormalizesLocalFileURLToRoutingKey() {
+        let engine = RoutingEngine(ruleStore: RuleStoreStub(lookup: { _ in nil }))
+        let url = URL(fileURLWithPath: "/tmp/bug.html")
+
+        let normalized = engine.normalize(url)
+
+        XCTAssertEqual(normalized?.normalizedHost, RoutingEngine.localFileRoutingHost)
+    }
+
+    func testShowsChooserForLocalFileURLWithoutHost() {
+        let engine = RoutingEngine(ruleStore: RuleStoreStub(lookup: { _ in nil }))
+        let url = URL(fileURLWithPath: "/tmp/bug.html")
 
         let decision = engine.decide(for: url)
 

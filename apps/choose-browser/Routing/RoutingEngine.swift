@@ -17,6 +17,7 @@ struct NormalizedRoutingURL: Equatable {
 }
 
 struct RoutingEngine {
+    static let localFileRoutingHost = "__choosebrowser_local_file__"
     static let defaultDecisionTimeout: TimeInterval = 1.5
 
     private let ruleStore: RuleStoring
@@ -122,6 +123,10 @@ struct RoutingEngine {
     func normalize(_ url: URL) -> NormalizedRoutingURL? {
         guard URLComponents(url: url, resolvingAgainstBaseURL: false) != nil else {
             return nil
+        }
+
+        if url.isFileURL {
+            return NormalizedRoutingURL(originalURL: url, normalizedHost: Self.localFileRoutingHost)
         }
 
         guard let host = extractNormalizedHost(from: url), !host.isEmpty else {

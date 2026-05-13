@@ -28,6 +28,8 @@ protocol RoutingRequestQueueing: AnyObject {
 
 final class URLInboundPipeline {
     init(queue: RoutingRequestQueueing) {}
+
+    func handleIncoming(filePaths: [String]) {}
 }
 
 final class ChooseBrowserAppDelegate {
@@ -36,6 +38,8 @@ final class ChooseBrowserAppDelegate {
     func application(_ application: NSApplication, open url: URL) {}
 
     func application(_ application: NSApplication, open urls: [URL]) {}
+
+    func application(_ sender: NSApplication, openFile filename: String) -> Bool { true }
 }
 #endif
 
@@ -84,5 +88,28 @@ final class URLInboundPipelineTests: XCTestCase {
         XCTAssertEqual(queue.requests[0].url, mailtoURL)
         XCTAssertEqual(queue.requests[1].url, fileURL)
         XCTAssertEqual(queue.requests[2].url, supportedURL)
+    }
+
+    func testDocumentOpenFilePathEnqueuesCanonicalFileURL() {
+        let queue = SpyQueue()
+        let pipeline = URLInboundPipeline(queue: queue)
+        let delegate = ChooseBrowserAppDelegate(inboundPipeline: pipeline)
+        let path = "/tmp/bug.html"
+
+        let handled = delegate.application(NSApplication.shared, openFile: path)
+
+        XCTAssertEqual(handled, true)
+        XCTAssertEqual(queue.requests, [RoutingRequest(url: URL(fileURLWithPath: path))])
+    }
+
+    func testDocumentOpenIgnoresRelativeFilePathArguments() {
+        let queue = SpyQueue()
+        let pipeline = URLInboundPipeline(queue: queue)
+        let delegate = ChooseBrowserAppDelegate(inboundPipeline: pipeline)
+
+        let handled = delegate.application(NSApplication.shared, openFile: "uitest.settings.suite")
+
+        XCTAssertEqual(handled, true)
+        XCTAssertEqual(queue.requests, [])
     }
 }

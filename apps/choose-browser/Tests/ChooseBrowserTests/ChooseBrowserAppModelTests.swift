@@ -23,11 +23,17 @@ final class ChooseBrowserAppModelTests: XCTestCase {
             nil
         }
 
+        func currentDefaultDocumentHandlerBundleIdentifier(forContentType _: String) -> String? {
+            nil
+        }
+
         func snapshot(appBundleIdentifier: String) -> DefaultHandlerSnapshot {
             DefaultHandlerSnapshot(
                 appBundleIdentifier: appBundleIdentifier,
                 httpHandlerBundleIdentifier: nil,
-                httpsHandlerBundleIdentifier: nil
+                httpsHandlerBundleIdentifier: nil,
+                htmlDocumentHandlerBundleIdentifier: nil,
+                xhtmlDocumentHandlerBundleIdentifier: nil
             )
         }
 

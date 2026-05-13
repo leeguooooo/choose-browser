@@ -15,6 +15,18 @@ final class URLInboundPipeline {
         }
     }
 
+    func handleIncoming(filePaths: [String]) {
+        let fileURLs = filePaths.compactMap { path -> URL? in
+            guard (path as NSString).isAbsolutePath else {
+                return nil
+            }
+
+            return URL(fileURLWithPath: path)
+        }
+
+        handleIncoming(urls: fileURLs)
+    }
+
     func handleIncoming(url: URL) {
         handleIncoming(url: url, sourceContext: InboundSourceContextV2(sourceTrigger: .warmOpen))
     }
@@ -158,6 +170,8 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
     private struct StaticDefaultHandlerInspector: DefaultHandlerInspecting {
         let httpHandlerBundleIdentifier: String?
         let httpsHandlerBundleIdentifier: String?
+        let htmlDocumentHandlerBundleIdentifier: String?
+        let xhtmlDocumentHandlerBundleIdentifier: String?
 
         func currentDefaultHandlerBundleIdentifier(for scheme: String) -> String? {
             if scheme == "http" {
@@ -171,11 +185,25 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
             return nil
         }
 
+        func currentDefaultDocumentHandlerBundleIdentifier(forContentType contentType: String) -> String? {
+            if contentType == "public.html" {
+                return htmlDocumentHandlerBundleIdentifier
+            }
+
+            if contentType == "public.xhtml" {
+                return xhtmlDocumentHandlerBundleIdentifier
+            }
+
+            return nil
+        }
+
         func snapshot(appBundleIdentifier: String) -> DefaultHandlerSnapshot {
             DefaultHandlerSnapshot(
                 appBundleIdentifier: appBundleIdentifier,
                 httpHandlerBundleIdentifier: httpHandlerBundleIdentifier,
-                httpsHandlerBundleIdentifier: httpsHandlerBundleIdentifier
+                httpsHandlerBundleIdentifier: httpsHandlerBundleIdentifier,
+                htmlDocumentHandlerBundleIdentifier: htmlDocumentHandlerBundleIdentifier,
+                xhtmlDocumentHandlerBundleIdentifier: xhtmlDocumentHandlerBundleIdentifier
             )
         }
 
@@ -887,7 +915,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
     private let ruleStore: InMemoryRuleStore
     private let inboundPipeline: URLInboundPipeline
 
-    private func positionWindowNearMouse(_ window: NSWindow) {
+    private static func positionWindowNearMouse(_ window: NSWindow) {
         let cursor = NSEvent.mouseLocation
         let currentFrame = window.frame
         let targetScreen = NSScreen.screens.first(where: { $0.frame.contains(cursor) }) ?? NSScreen.main
@@ -902,22 +930,18 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
         window.setFrameOrigin(NSPoint(x: originX, y: originY))
     }
 
-    private func refreshWindowPresentation(isChooserPresented: Bool) {
-        guard let window else {
-            return
-        }
-
+    private static func refreshWindowPresentation(_ window: NSWindow, isChooserPresented: Bool) {
         if isChooserPresented {
             window.level = .statusBar
-            
+
             // Resize window to fit ChooserView
             let chooserWidth: CGFloat = 420
             let chooserHeight: CGFloat = 480 // Approximate height for URL + Search + List + Footer
             var frame = window.frame
             frame.size = NSSize(width: chooserWidth, height: chooserHeight)
             window.setFrame(frame, display: true)
-            
-            positionWindowNearMouse(window)
+
+            Self.positionWindowNearMouse(window)
             NSRunningApplication.current.activate(options: [.activateAllWindows, .activateIgnoringOtherApps])
             window.orderFrontRegardless()
             window.makeKeyAndOrderFront(nil)
@@ -925,12 +949,6 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
         }
 
         window.level = .normal
-    }
-
-    private func terminateAfterSuccessfulDispatch() {
-        DispatchQueue.main.async {
-            NSApplication.shared.terminate(nil)
-        }
     }
 
     private static func argumentValue(flag: String, arguments: [String]) -> String? {
@@ -1010,21 +1028,27 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
             if arguments.contains("--uitest-onboarding-configured") {
                 return StaticDefaultHandlerInspector(
                     httpHandlerBundleIdentifier: appBundleIdentifier,
-                    httpsHandlerBundleIdentifier: appBundleIdentifier
+                    httpsHandlerBundleIdentifier: appBundleIdentifier,
+                    htmlDocumentHandlerBundleIdentifier: appBundleIdentifier,
+                    xhtmlDocumentHandlerBundleIdentifier: appBundleIdentifier
                 )
             }
 
             if arguments.contains("--uitest-onboarding-partial") {
                 return StaticDefaultHandlerInspector(
                     httpHandlerBundleIdentifier: "com.other.browser",
-                    httpsHandlerBundleIdentifier: appBundleIdentifier
+                    httpsHandlerBundleIdentifier: appBundleIdentifier,
+                    htmlDocumentHandlerBundleIdentifier: "com.other.browser",
+                    xhtmlDocumentHandlerBundleIdentifier: "com.other.browser"
                 )
             }
 
             if arguments.contains("--uitest-onboarding-not-configured") {
                 return StaticDefaultHandlerInspector(
                     httpHandlerBundleIdentifier: "com.other.browser",
-                    httpsHandlerBundleIdentifier: "com.other.browser"
+                    httpsHandlerBundleIdentifier: "com.other.browser",
+                    htmlDocumentHandlerBundleIdentifier: "com.other.browser",
+                    xhtmlDocumentHandlerBundleIdentifier: "com.other.browser"
                 )
             }
 
@@ -1046,13 +1070,6 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
             showAdvancedPanel: showAdvancedPanel,
             autoQuitOnSuccessfulDispatch: !isUITestMode
         )
-        model.onChooserPresentationChanged = { [weak self] isPresented in
-            self?.refreshWindowPresentation(isChooserPresented: isPresented)
-        }
-        model.onSuccessfulDispatch = { [weak self] in
-            self?.terminateAfterSuccessfulDispatch()
-        }
-
         routingQueue.onEnqueue = { [weak model] in
             Task { @MainActor in
                 model?.processNextRequestIfNeeded()
@@ -1079,6 +1096,19 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
         window.contentView = hostingView
         window.makeKeyAndOrderFront(nil)
         self.window = window
+
+        model.onChooserPresentationChanged = { [weak window] isPresented in
+            guard let window else {
+                return
+            }
+
+            Self.refreshWindowPresentation(window, isChooserPresented: isPresented)
+        }
+        model.onSuccessfulDispatch = {
+            DispatchQueue.main.async {
+                NSApplication.shared.terminate(nil)
+            }
+        }
 
         if arguments.contains("--uitest-show-chooser") {
             model.showUITestChooser(empty: false)
@@ -1112,6 +1142,16 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
 
     func application(_ application: NSApplication, open url: URL) {
         inboundPipeline.handleIncoming(url: url)
+    }
+
+    func application(_ sender: NSApplication, openFile filename: String) -> Bool {
+        inboundPipeline.handleIncoming(filePaths: [filename])
+        return true
+    }
+
+    func application(_ sender: NSApplication, openFiles filenames: [String]) {
+        inboundPipeline.handleIncoming(filePaths: filenames)
+        sender.reply(toOpenOrPrint: .success)
     }
 
     func windowWillClose(_ notification: Notification) {
