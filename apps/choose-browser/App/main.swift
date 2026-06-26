@@ -783,11 +783,20 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
                     )
                 },
                 onCancel: { [weak self] in
-                    self?.lastActionMessage = "cancelled"
-                    self?.chooserSession = nil
-                    self?.onChooserPresentationChanged?(false)
-                    self?.isProcessingRequest = false
-                    self?.processNextRequestIfNeeded()
+                    guard let self else { return }
+                    self.lastActionMessage = "cancelled"
+                    self.chooserSession = nil
+                    self.onChooserPresentationChanged?(false)
+                    self.isProcessingRequest = false
+                    self.processNextRequestIfNeeded()
+                    // Ephemeral router: once the chooser is dismissed and nothing
+                    // else is queued, quit instead of lingering. A lingering
+                    // process keeps serving its (now possibly outdated) binary to
+                    // every subsequent link click; quitting guarantees the next
+                    // click cold-launches the currently installed build.
+                    if self.autoQuitOnSuccessfulDispatch, self.chooserSession == nil {
+                        self.onSuccessfulDispatch?()
+                    }
                 },
                 onOpenFallback: { [weak self] in
                     let latestDiscoveredTargets = self?.applyChooserOrder(to: orderedDiscoveredTargets) ?? orderedDiscoveredTargets

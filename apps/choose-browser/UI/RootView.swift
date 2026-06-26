@@ -4,6 +4,11 @@ struct RootView: View {
     @ObservedObject var appModel: ChooseBrowserAppDelegate.ChooseBrowserAppModel
     private let placeholderURL = URL(string: "https://example.com")!
 
+    static var appVersion: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+        return "v\(version)"
+    }
+
     var body: some View {
         Group {
             if let session = appModel.chooserSession {
@@ -48,10 +53,25 @@ struct RootView: View {
     private var controlPanelView: some View {
         let lastActionText = "Last action: \(appModel.lastActionMessage)"
 
-        return VStack(alignment: .leading, spacing: 14) {
-            Text("ChooseBrowser")
-                .font(.title2)
-                .fontWeight(.semibold)
+        return VStack(alignment: .leading, spacing: 20) {
+            HStack(spacing: 14) {
+                if let appIcon = NSApp.applicationIconImage {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .frame(width: 52, height: 52)
+                }
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("ChooseBrowser")
+                        .font(.title.weight(.semibold))
+
+                    Text("\(Self.appVersion) · Pick a browser for every link")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer(minLength: 0)
+            }
 
             DefaultBrowserStatusView(
                 snapshot: appModel.defaultHandlerSnapshot,
@@ -70,8 +90,9 @@ struct RootView: View {
                 .accessibilityLabel(lastActionText)
                 .accessibilityIdentifier(AccessibilityIdentifiers.chooserLastActionLabel)
         }
-        .padding(16)
-        .frame(minWidth: 460, minHeight: 220)
+        .padding(24)
+        .frame(minWidth: 480, minHeight: 240)
+        .background(.regularMaterial)
     }
 
     private var advancedDashboardView: some View {

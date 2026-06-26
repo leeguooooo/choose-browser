@@ -44,8 +44,8 @@ targets:
             CFBundleURLSchemes:
               - http
               - https
-        CFBundleShortVersionString: "0.1.15"
-        CFBundleVersion: "12"
+        CFBundleShortVersionString: "0.1.16"
+        CFBundleVersion: "13"
         LSMinimumSystemVersion: "26.0"
         LSUIElement: false
         NSPrincipalClass: NSApplication
@@ -68,8 +68,8 @@ targets:
         CFBundleInfoDictionaryVersion: "6.0"
         CFBundleName: $(PRODUCT_NAME)
         CFBundlePackageType: APPL
-        CFBundleShortVersionString: "0.1.15"
-        CFBundleVersion: "12"
+        CFBundleShortVersionString: "0.1.16"
+        CFBundleVersion: "13"
         LSMinimumSystemVersion: "26.0"
         LSUIElement: true
         NSPrincipalClass: NSApplication
