@@ -2,9 +2,29 @@ import AppKit
 import Foundation
 
 struct ExecutionTarget: Equatable {
+    /// Stable, unique identity for selection. Equals `bundleIdentifier` for an
+    /// ordinary browser; for a per-profile target it is the composite id minted
+    /// by discovery so each profile resolves to the correct launch arguments.
+    let id: String
     let bundleIdentifier: String
     let displayName: String
     let applicationURL: URL
+    /// Extra process arguments at launch, e.g. `--profile-directory=Profile 1`.
+    let launchArguments: [String]
+
+    init(
+        bundleIdentifier: String,
+        displayName: String,
+        applicationURL: URL,
+        id: String? = nil,
+        launchArguments: [String] = []
+    ) {
+        self.id = id ?? bundleIdentifier
+        self.bundleIdentifier = bundleIdentifier
+        self.displayName = displayName
+        self.applicationURL = applicationURL
+        self.launchArguments = launchArguments
+    }
 }
 
 enum OpenExecutionFailureReason: Equatable {
@@ -302,7 +322,8 @@ final class OpenExecutor {
         let preferredTargetMissing = preferredTargetBundleIdentifier != nil
 
         if let preferredTargetBundleIdentifier,
-           let preferred = discoveredTargets.first(where: { $0.bundleIdentifier == preferredTargetBundleIdentifier })
+           let preferred = discoveredTargets.first(where: { $0.id == preferredTargetBundleIdentifier })
+               ?? discoveredTargets.first(where: { $0.bundleIdentifier == preferredTargetBundleIdentifier })
         {
             return (preferred, nil)
         }
@@ -336,6 +357,9 @@ final class OpenExecutor {
     private func openExplicitly(requestURL: URL, target: ExecutionTarget) async -> Bool {
         await withCheckedContinuation { continuation in
             let configuration = NSWorkspace.OpenConfiguration()
+            if !target.launchArguments.isEmpty {
+                configuration.arguments = target.launchArguments
+            }
 
             workspace.open(
                 [requestURL],

@@ -2,7 +2,7 @@ name: ChooseBrowser
 options:
   bundleIdPrefix: com.choosebrowser
   deploymentTarget:
-    macOS: "13.0"
+    macOS: "26.0"
 settings:
   base:
     SWIFT_VERSION: "5.0"
@@ -44,9 +44,9 @@ targets:
             CFBundleURLSchemes:
               - http
               - https
-        CFBundleShortVersionString: "0.1.10"
-        CFBundleVersion: "7"
-        LSMinimumSystemVersion: "13.0"
+        CFBundleShortVersionString: "0.1.11"
+        CFBundleVersion: "8"
+        LSMinimumSystemVersion: "26.0"
         LSUIElement: false
         NSPrincipalClass: NSApplication
     settings:
@@ -68,9 +68,9 @@ targets:
         CFBundleInfoDictionaryVersion: "6.0"
         CFBundleName: $(PRODUCT_NAME)
         CFBundlePackageType: APPL
-        CFBundleShortVersionString: "0.1.10"
-        CFBundleVersion: "7"
-        LSMinimumSystemVersion: "13.0"
+        CFBundleShortVersionString: "0.1.11"
+        CFBundleVersion: "8"
+        LSMinimumSystemVersion: "26.0"
         LSUIElement: true
         NSPrincipalClass: NSApplication
         CFBundleURLTypes:

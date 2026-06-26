@@ -25,23 +25,20 @@ private extension View {
     func onChooserKeyDown(_ handler: @escaping (NSEvent) -> Bool) -> some View {
         modifier(KeyDownMonitor(onKeyDown: handler))
     }
-}
 
-struct VisualEffectView: NSViewRepresentable {
-    let material: NSVisualEffectView.Material
-    let blendingMode: NSVisualEffectView.BlendingMode
-
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.material = material
-        view.blendingMode = blendingMode
-        view.state = .active
-        return view
-    }
-
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        nsView.material = material
-        nsView.blendingMode = blendingMode
+    /// Applies the interactive, accent-tinted Liquid Glass highlight only to the
+    /// currently selected row. Rows that aren't selected stay transparent so the
+    /// underlying glass card shows through.
+    @ViewBuilder
+    func selectionGlass(_ isSelected: Bool) -> some View {
+        if isSelected {
+            glassEffect(
+                .regular.tint(.accentColor).interactive(),
+                in: .rect(cornerRadius: 8, style: .continuous)
+            )
+        } else {
+            self
+        }
     }
 }
 
@@ -75,6 +72,7 @@ struct ChooserView: View {
     @State private var draggedTargetID: String?
 
     var body: some View {
+      GlassEffectContainer(spacing: 10) {
         VStack(spacing: 0) {
             // URL Header
             HStack(spacing: 12) {
@@ -159,13 +157,14 @@ struct ChooserView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
-            .background(Color.primary.opacity(0.03))
         }
         .frame(width: 420)
-        .background(VisualEffectView(material: .underWindowBackground, blendingMode: .behindWindow))
+        .glassEffect(.regular, in: .rect(cornerRadius: 22))
         .onAppear {
             isSearchFieldFocused = true
         }
+      }
+        .padding(8)
         .onChooserKeyDown { event in
             switch event.keyCode {
             case 125: // Down
@@ -253,10 +252,8 @@ struct ChooserView: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(isSelected ? Color.accentColor : Color.clear)
-            )
+            .contentShape(.rect(cornerRadius: 8))
+            .selectionGlass(isSelected)
         }
         .buttonStyle(.plain)
         .onDrag {

@@ -135,6 +135,19 @@ final class URLInboundPipeline {
     }
 }
 
+/// Borderless floating panel used to host the chooser overlay.
+///
+/// A plain `NSWindow` cannot reliably float over a full-screen Space, and
+/// activating the whole app (the previous behavior) forces macOS to switch out
+/// of the active full-screen Space back to the desktop. A non-activating panel
+/// with `.canJoinAllSpaces`/`.fullScreenAuxiliary` is the Spotlight/Raycast
+/// pattern: it appears on top of whatever is on screen, including full-screen
+/// apps, without stealing activation or switching Spaces.
+final class OverlayPanel: NSPanel {
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
+}
+
 final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private struct UITestTargets {
         static let standard: [ExecutionTarget] = [
@@ -698,9 +711,11 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
 
             return targetDiscovery.availableTargets().map {
                 ExecutionTarget(
-                    bundleIdentifier: $0.id,
+                    bundleIdentifier: $0.bundleIdentifier,
                     displayName: $0.displayName,
-                    applicationURL: $0.applicationURL
+                    applicationURL: $0.applicationURL,
+                    id: $0.id,
+                    launchArguments: $0.launchArguments
                 )
             }
         }
@@ -708,7 +723,9 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
         private func resolveRoutedExecutionTarget(for target: RoutingTarget) -> ExecutionTarget {
             let discoveredTargets = resolveDiscoveredTargets()
 
-            if let discoveredTarget = discoveredTargets.first(where: { $0.bundleIdentifier == target.bundleIdentifier }) {
+            if let discoveredTarget = discoveredTargets.first(where: { $0.id == target.bundleIdentifier })
+                ?? discoveredTargets.first(where: { $0.bundleIdentifier == target.bundleIdentifier })
+            {
                 return discoveredTarget
             }
 
@@ -737,7 +754,7 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
             let orderedDiscoveredTargets = applyChooserOrder(to: discoveredTargets)
             let chooserTargets = orderedDiscoveredTargets.map {
                 ChooserTarget(
-                    id: $0.bundleIdentifier,
+                    id: $0.id,
                     displayName: $0.displayName,
                     applicationURL: $0.applicationURL
                 )
@@ -804,19 +821,19 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
                 return discoveredTargets
             }
 
-            var remainingByBundleIdentifier: [String: ExecutionTarget] = [:]
-            discoveredTargets.forEach { remainingByBundleIdentifier[$0.bundleIdentifier] = $0 }
+            var remainingByID: [String: ExecutionTarget] = [:]
+            discoveredTargets.forEach { remainingByID[$0.id] = $0 }
             var orderedTargets: [ExecutionTarget] = []
 
-            for bundleIdentifier in chooserOrderBundleIdentifiers {
-                guard let target = remainingByBundleIdentifier.removeValue(forKey: bundleIdentifier) else {
+            for orderedID in chooserOrderBundleIdentifiers {
+                guard let target = remainingByID.removeValue(forKey: orderedID) else {
                     continue
                 }
 
                 orderedTargets.append(target)
             }
 
-            for target in discoveredTargets where remainingByBundleIdentifier[target.bundleIdentifier] != nil {
+            for target in discoveredTargets where remainingByID[target.id] != nil {
                 orderedTargets.append(target)
             }
 
@@ -876,11 +893,12 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
                 await MainActor.run {
                     if let rememberTargetForHost,
                        let normalized = routingEngine.normalize(primaryURL),
-                       let target = discoveredTargets.first(where: { $0.bundleIdentifier == rememberTargetForHost })
+                       let target = discoveredTargets.first(where: { $0.id == rememberTargetForHost })
+                           ?? discoveredTargets.first(where: { $0.bundleIdentifier == rememberTargetForHost })
                     {
                         ruleStore.setPreferredTarget(
                             RoutingTarget(
-                                bundleIdentifier: target.bundleIdentifier,
+                                bundleIdentifier: target.id,
                                 displayName: target.displayName
                             ),
                             forHost: normalized.normalizedHost
@@ -932,7 +950,13 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
 
     private static func refreshWindowPresentation(_ window: NSWindow, isChooserPresented: Bool) {
         if isChooserPresented {
-            window.level = .statusBar
+            // Float above everything, including full-screen apps, without
+            // activating the app or switching Spaces.
+            window.level = .floating
+            window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
+            window.isOpaque = false
+            window.backgroundColor = .clear
+            window.hasShadow = true
 
             // Resize window to fit ChooserView
             let chooserWidth: CGFloat = 420
@@ -942,13 +966,20 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
             window.setFrame(frame, display: true)
 
             Self.positionWindowNearMouse(window)
-            NSRunningApplication.current.activate(options: [.activateAllWindows, .activateIgnoringOtherApps])
+            // `orderFrontRegardless` + `makeKey` brings the panel forward and
+            // gives it keyboard focus for the search field WITHOUT calling
+            // `NSRunningApplication.activate`, which is what previously yanked
+            // the user out of a full-screen Space back to the desktop.
             window.orderFrontRegardless()
             window.makeKeyAndOrderFront(nil)
             return
         }
 
+        // Idle / settings surface: behave like a normal window.
         window.level = .normal
+        window.collectionBehavior = [.fullScreenAuxiliary]
+        window.isOpaque = true
+        window.backgroundColor = .windowBackgroundColor
     }
 
     private static func argumentValue(flag: String, arguments: [String]) -> String? {
@@ -1081,20 +1112,29 @@ final class ChooseBrowserAppDelegate: NSObject, NSApplicationDelegate, NSWindowD
         let hostingView = NSHostingView(rootView: RootView(appModel: model))
         let initialWindowWidth: CGFloat = showAdvancedPanel ? 860 : 480
         let initialWindowHeight: CGFloat = showAdvancedPanel ? 780 : 260
-        let window = NSWindow(
+        let window = OverlayPanel(
             contentRect: NSRect(x: 0, y: 0, width: initialWindowWidth, height: initialWindowHeight),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
+            styleMask: [.titled, .closable, .resizable, .fullSizeContentView, .nonactivatingPanel],
             backing: .buffered,
             defer: false
         )
+        window.isFloatingPanel = true
+        window.hidesOnDeactivate = false
+        window.isMovableByWindowBackground = true
         window.center()
         window.title = "ChooseBrowser"
         window.titlebarAppearsTransparent = true
         window.titleVisibility = .hidden
-        window.collectionBehavior.insert(.moveToActiveSpace)
+        window.standardWindowButton(.closeButton)?.isHidden = true
+        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+        window.standardWindowButton(.zoomButton)?.isHidden = true
+        window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .stationary]
         window.delegate = self
         window.contentView = hostingView
-        window.makeKeyAndOrderFront(nil)
+        // The chooser presentation path (`refreshWindowPresentation`) takes over
+        // ordering/level once a request arrives; for the idle launch keep it on
+        // screen without forcing app activation.
+        window.orderFrontRegardless()
         self.window = window
 
         model.onChooserPresentationChanged = { [weak window] isPresented in
