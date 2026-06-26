@@ -71,6 +71,13 @@ struct ChooserView: View {
     @FocusState private var isSearchFieldFocused: Bool
     @State private var draggedTargetID: String?
 
+    /// Short version string ("v0.1.14") read from the bundle, shown in the
+    /// header so it's always obvious which build is actually running.
+    static var appVersion: String {
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+        return "v\(version)"
+    }
+
     var body: some View {
       GlassEffectContainer(spacing: 10) {
         VStack(spacing: 0) {
@@ -83,10 +90,21 @@ struct ChooserView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("ChooseBrowser")
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                    
+                    HStack(spacing: 6) {
+                        Text("ChooseBrowser")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+
+                        Text(Self.appVersion)
+                            .font(.system(size: 10, weight: .medium, design: .monospaced))
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 1)
+                            .background(
+                                Capsule().fill(Color.primary.opacity(0.08))
+                            )
+                    }
+
                     Text(url.absoluteString)
                         .font(.caption)
                         .foregroundColor(.secondary)
