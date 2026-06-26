@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08D63F2701F88A3E880D44C3 /* OpenExecutorProfileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4FB2396C91EB2DD7E1E40 /* OpenExecutorProfileTests.swift */; };
 		0D10144BB8D7858683FFEB28 /* URLRewritePipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98D697A97B7BB9442D4971D /* URLRewritePipelineTests.swift */; };
 		11E104B7709E5CE3A3345EA3 /* ChooserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2F3B57FC6EE0E4D59EEA86 /* ChooserView.swift */; };
 		18881176443BAEF20A6493BC /* ExtensionTransportAdapters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394B0F13E5DE552D9C3E0962 /* ExtensionTransportAdapters.swift */; };
@@ -14,6 +15,7 @@
 		1C1F2F3A69D4F39B1C45F6BE /* RoutingEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C46705BD22BFCD29BA122CD /* RoutingEngineTests.swift */; };
 		1F6A43A488674A146AFD7085 /* DiagnosticsLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39CB203BFA14B8C8170471D6 /* DiagnosticsLogger.swift */; };
 		23F15BA223BAA2979B8412BB /* ChooserViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F464B71F44AB3DFD9FDB2A06 /* ChooserViewModelTests.swift */; };
+		250A20AE2F43DA8B78E92886 /* ChromiumProfileReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C4AF577DE7D95EFF1118B8 /* ChromiumProfileReaderTests.swift */; };
 		2691A9CE5F1031CA8B9AD4BB /* RoutingDecision.swift in Sources */ = {isa = PBXBuildFile; fileRef = A716CD703AE464D2DB8D0B41 /* RoutingDecision.swift */; };
 		28BAFEC43CD5C3735885CA8E /* ProfileWorkspaceModelsV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4489CB7CF334B961AA21F7F1 /* ProfileWorkspaceModelsV2.swift */; };
 		31B4180549B663CF87298566 /* RuleStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92277FD25D44E8050418FF1C /* RuleStore.swift */; };
@@ -63,9 +65,11 @@
 		C769BED1CA68DC99CCFE60B3 /* RuleSchemaV2MigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A7707A133117F202F05269 /* RuleSchemaV2MigrationTests.swift */; };
 		C947B175542577FA9B490448 /* ChooserEmptyStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FB859FC29D75D1CF3FDDA5 /* ChooserEmptyStateTests.swift */; };
 		C99B1DD28173095924A7D089 /* BrowserSupportMatrixIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A7BFE490F9C6855784E723 /* BrowserSupportMatrixIntegrationTests.swift */; };
+		CAAB42FD0EB4C954FDD14205 /* ChromiumProfileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E058B651FB237B327F0721C6 /* ChromiumProfileReader.swift */; };
 		D201FB93C61378A6ACBE3AF6 /* DefaultBrowserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83829B417A3042F6A22A82AD /* DefaultBrowserStatusView.swift */; };
 		D5A2F70CE8772B109ECFB4E7 /* RoutingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF379881ACEA2F95C39EEF0B /* RoutingCoordinator.swift */; };
 		D604AF252DFF43B5C7C4C35F /* AppSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD262965A1C9235A5CFE508 /* AppSettingsStore.swift */; };
+		D9DF2F8731210D91111E0687 /* DiscoveryProfileExpansionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9617D28D7C5B8BB4EC8339E3 /* DiscoveryProfileExpansionTests.swift */; };
 		DB0C77BAA0DD4FF2C28A7BF2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162ADBEAED73EB4A63F5A7AC /* SettingsView.swift */; };
 		DB1A5304466C1D2FEC4FBDC2 /* ExtensionTransportIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C1037BA0CC7076D86D461F /* ExtensionTransportIntegrationTests.swift */; };
 		DC1CBEBF0CDAB0AA91DA3AE4 /* ChooseBrowserAppModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86308FE0C07AA4E942650B8B /* ChooseBrowserAppModelTests.swift */; };
@@ -142,6 +146,7 @@
 		69C2AA8C5311E0DC8B78203F /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
 		6A2F3B57FC6EE0E4D59EEA86 /* ChooserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooserView.swift; sourceTree = "<group>"; };
 		6A317DB41551100C1722DBAA /* ContractSurfaceV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractSurfaceV2.swift; sourceTree = "<group>"; };
+		6EC4FB2396C91EB2DD7E1E40 /* OpenExecutorProfileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExecutorProfileTests.swift; sourceTree = "<group>"; };
 		725D11945C81A6AB591AC1DD /* Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholder.swift; sourceTree = "<group>"; };
 		74A7BFE490F9C6855784E723 /* BrowserSupportMatrixIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserSupportMatrixIntegrationTests.swift; sourceTree = "<group>"; };
 		77242AC6506C1326551E6CF4 /* URLRewritePipelineV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRewritePipelineV2.swift; sourceTree = "<group>"; };
@@ -161,6 +166,7 @@
 		90064F32214F9ACA30B50DD9 /* RuleEngineV2DeterminismTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEngineV2DeterminismTests.swift; sourceTree = "<group>"; };
 		92277FD25D44E8050418FF1C /* RuleStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleStore.swift; sourceTree = "<group>"; };
 		946F4A3E976079F489AB28D8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		9617D28D7C5B8BB4EC8339E3 /* DiscoveryProfileExpansionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryProfileExpansionTests.swift; sourceTree = "<group>"; };
 		962AE4D2B8B7B2714B8D6DCA /* FilePredicateRuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePredicateRuleTests.swift; sourceTree = "<group>"; };
 		979F46DF58428377958FEB1C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		9ADF5A61FDA4C6F3B281816E /* SafariBridgeHost */ = {isa = PBXFileReference; includeInIndex = 0; path = SafariBridgeHost; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,10 +188,12 @@
 		D60AB27ECE89A265984C9FC1 /* TargetDiscoveryCapabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetDiscoveryCapabilityTests.swift; sourceTree = "<group>"; };
 		D697833BFB7A53A952726EFD /* RequestQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestQueue.swift; sourceTree = "<group>"; };
 		D6FB859FC29D75D1CF3FDDA5 /* ChooserEmptyStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooserEmptyStateTests.swift; sourceTree = "<group>"; };
+		E058B651FB237B327F0721C6 /* ChromiumProfileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromiumProfileReader.swift; sourceTree = "<group>"; };
 		E3C1037BA0CC7076D86D461F /* ExtensionTransportIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTransportIntegrationTests.swift; sourceTree = "<group>"; };
 		EA18FC75BC42983497512327 /* ModuleBoundarySentinel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBoundarySentinel.swift; sourceTree = "<group>"; };
 		ED40FB083493EF48AEDAB391 /* ChooseBrowserIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChooseBrowserIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F464B71F44AB3DFD9FDB2A06 /* ChooserViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooserViewModelTests.swift; sourceTree = "<group>"; };
+		F4C4AF577DE7D95EFF1118B8 /* ChromiumProfileReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromiumProfileReaderTests.swift; sourceTree = "<group>"; };
 		F98D697A97B7BB9442D4971D /* URLRewritePipelineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRewritePipelineTests.swift; sourceTree = "<group>"; };
 		FB27AD8680C9263C6E298405 /* OpenExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExecutor.swift; sourceTree = "<group>"; };
 		FB6B95BF74714DA03564E74E /* InboundRequestV2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboundRequestV2Tests.swift; sourceTree = "<group>"; };
@@ -271,12 +279,15 @@
 				86308FE0C07AA4E942650B8B /* ChooseBrowserAppModelTests.swift */,
 				633CB7283CE8AA6F0717B059 /* ChooseBrowserTests.swift */,
 				F464B71F44AB3DFD9FDB2A06 /* ChooserViewModelTests.swift */,
+				F4C4AF577DE7D95EFF1118B8 /* ChromiumProfileReaderTests.swift */,
 				582285DF05990CB84C7B1C5F /* ContractSurfaceTests.swift */,
 				A5074A733B8ECAE1E4333B08 /* DefaultHandlerSnapshotTests.swift */,
+				9617D28D7C5B8BB4EC8339E3 /* DiscoveryProfileExpansionTests.swift */,
 				962AE4D2B8B7B2714B8D6DCA /* FilePredicateRuleTests.swift */,
 				10F02AB23F1AF1A4D2624E0E /* HandoffBrokerTests.swift */,
 				FB6B95BF74714DA03564E74E /* InboundRequestV2Tests.swift */,
 				B6D0D0783F7C0AEA8C4E119A /* MultiTargetExecutionTests.swift */,
+				6EC4FB2396C91EB2DD7E1E40 /* OpenExecutorProfileTests.swift */,
 				05701190605A80D8A4A08DC1 /* OpenExecutorTests.swift */,
 				CA8CFCC88B67A31060BC5823 /* ProfileWorkspaceStoreTests.swift */,
 				0F7FA4E25D832B97ADDEC288 /* RequestQueueTests.swift */,
@@ -351,6 +362,7 @@
 		C28181F7248C3571AAB47971 /* Discovery */ = {
 			isa = PBXGroup;
 			children = (
+				E058B651FB237B327F0721C6 /* ChromiumProfileReader.swift */,
 				3C20C59385DB6F666463127B /* TargetDiscovery.swift */,
 			);
 			path = Discovery;
@@ -639,6 +651,7 @@
 				8F0DDD7632201EE5320337D6 /* ChooseBrowserApp.swift in Sources */,
 				11E104B7709E5CE3A3345EA3 /* ChooserView.swift in Sources */,
 				93BCF4E8AA5DA240D48D58C3 /* ChooserViewModel.swift in Sources */,
+				CAAB42FD0EB4C954FDD14205 /* ChromiumProfileReader.swift in Sources */,
 				A06B01D3ED79C11F6F109AC1 /* ContractSurfaceV2.swift in Sources */,
 				D201FB93C61378A6ACBE3AF6 /* DefaultBrowserStatusView.swift in Sources */,
 				857583FEE87B52C5A60E5B72 /* DefaultHandlerInspector.swift in Sources */,
@@ -676,12 +689,15 @@
 				DC1CBEBF0CDAB0AA91DA3AE4 /* ChooseBrowserAppModelTests.swift in Sources */,
 				E7065570827BFA26688695C7 /* ChooseBrowserTests.swift in Sources */,
 				23F15BA223BAA2979B8412BB /* ChooserViewModelTests.swift in Sources */,
+				250A20AE2F43DA8B78E92886 /* ChromiumProfileReaderTests.swift in Sources */,
 				BF8CA5F6A04CC9BCC47EF13A /* ContractSurfaceTests.swift in Sources */,
 				A68B8F2AC580D55F7CB6B153 /* DefaultHandlerSnapshotTests.swift in Sources */,
+				D9DF2F8731210D91111E0687 /* DiscoveryProfileExpansionTests.swift in Sources */,
 				39B07A03D6E064F556295166 /* FilePredicateRuleTests.swift in Sources */,
 				E9E4A8013A0B1D9527306755 /* HandoffBrokerTests.swift in Sources */,
 				E00A4A163F48016966876D8A /* InboundRequestV2Tests.swift in Sources */,
 				82CE9AF0869619B7D28F02BE /* MultiTargetExecutionTests.swift in Sources */,
+				08D63F2701F88A3E880D44C3 /* OpenExecutorProfileTests.swift in Sources */,
 				4E99AAAC12E264A2997AAA32 /* OpenExecutorTests.swift in Sources */,
 				7A840313FBBDF257394E9F67 /* ProfileWorkspaceStoreTests.swift in Sources */,
 				646671A833B5C0E9563B5FE7 /* RequestQueueTests.swift in Sources */,
@@ -811,7 +827,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -980,7 +996,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

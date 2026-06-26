@@ -88,20 +88,33 @@ struct BrowserTargetCapabilities: Codable, Equatable {
 }
 
 struct BrowserTarget: Equatable, Identifiable {
+    /// Stable, unique identity for this row. For an ordinary browser this is the
+    /// bundle identifier; for a per-profile row it is a composite of the bundle
+    /// identifier and the profile directory so each profile is independently
+    /// selectable.
     let id: String
+    /// The real application bundle identifier (shared across a browser's
+    /// profile rows). Routing rules and the loop guard key off this.
+    let bundleIdentifier: String
     let displayName: String
     let applicationURL: URL
+    /// Extra process arguments to pass at launch, e.g. `--profile-directory=…`.
+    let launchArguments: [String]
     let capabilities: BrowserTargetCapabilities
 
     init(
         id: String,
         displayName: String,
         applicationURL: URL,
-        capabilities: BrowserTargetCapabilities = .default
+        capabilities: BrowserTargetCapabilities = .default,
+        bundleIdentifier: String? = nil,
+        launchArguments: [String] = []
     ) {
         self.id = id
+        self.bundleIdentifier = bundleIdentifier ?? id
         self.displayName = displayName
         self.applicationURL = applicationURL
+        self.launchArguments = launchArguments
         self.capabilities = capabilities
     }
 }
@@ -213,11 +226,20 @@ protocol BrowserHandlerQuerying {
 
 struct LiveBrowserHandlerQuery: BrowserHandlerQuerying {
     func handlers(for scheme: String) -> [String] {
-        guard let handlers = LSCopyAllHandlersForURLScheme(scheme as CFString)?.takeRetainedValue() as? [String] else {
+        // `LSCopyAllHandlersForURLScheme` is deprecated and on recent macOS
+        // returns an incomplete set (browsers that have never been launched, or
+        // that only register document types, get dropped). The modern
+        // `urlsForApplications(toOpen:)` returns every app LaunchServices knows
+        // can open the URL, in preference order, which is what we want here.
+        guard let probeURL = URL(string: "\(scheme)://example.com") else {
             return []
         }
 
-        return handlers
+        let applicationURLs = NSWorkspace.shared.urlsForApplications(toOpen: probeURL)
+
+        return applicationURLs.compactMap { applicationURL in
+            Bundle(url: applicationURL)?.bundleIdentifier
+        }
     }
 
     func applicationURL(for bundleIdentifier: String) -> URL? {
@@ -240,18 +262,21 @@ final class TargetDiscovery: BrowserDiscoveryConfiguring {
     private let selfBundleIdentifier: String
     private let query: BrowserHandlerQuerying
     private let capabilityResolver: BrowserCapabilityResolving
+    private let profileReader: ChromiumProfileReading
     private var hiddenBundleIdentifiers: Set<String>
 
     init(
         selfBundleIdentifier: String = Bundle.main.bundleIdentifier ?? "",
         hiddenBundleIdentifiers: Set<String> = [],
         query: BrowserHandlerQuerying = LiveBrowserHandlerQuery(),
-        capabilityResolver: BrowserCapabilityResolving = LiveBrowserCapabilityResolver()
+        capabilityResolver: BrowserCapabilityResolving = LiveBrowserCapabilityResolver(),
+        profileReader: ChromiumProfileReading = LiveChromiumProfileReader()
     ) {
         self.selfBundleIdentifier = selfBundleIdentifier
         self.hiddenBundleIdentifiers = hiddenBundleIdentifiers
         self.query = query
         self.capabilityResolver = capabilityResolver
+        self.profileReader = profileReader
     }
 
     func setHiddenBundleIdentifiers(_ hiddenBundleIdentifiers: Set<String>) {
@@ -277,13 +302,15 @@ final class TargetDiscovery: BrowserDiscoveryConfiguring {
                 for: bundleIdentifier,
                 supportedSchemes: schemesByBundleIdentifier[bundleIdentifier, default: []]
             )
-            let target = BrowserTarget(
-                id: bundleIdentifier,
-                displayName: displayName,
-                applicationURL: applicationURL,
-                capabilities: capabilities
+
+            candidates.append(
+                contentsOf: expandedTargets(
+                    bundleIdentifier: bundleIdentifier,
+                    displayName: displayName,
+                    applicationURL: applicationURL,
+                    capabilities: capabilities
+                )
             )
-            candidates.append(target)
         }
 
         let sorted = candidates.sorted(by: sortComparator)
@@ -297,6 +324,48 @@ final class TargetDiscovery: BrowserDiscoveryConfiguring {
 
     func availableTargets() -> [BrowserTarget] {
         discoverTargets().candidates
+    }
+
+    /// Separator used to build a composite, per-profile target id. Chosen so it
+    /// cannot collide with a bundle identifier or a profile directory name.
+    static let profileIDSeparator = "::profile::"
+
+    /// Expands a single browser into one row per profile when the browser is
+    /// Chromium-based, supports `--profile-directory` launching, and exposes
+    /// more than one profile. Otherwise returns the single browser row.
+    private func expandedTargets(
+        bundleIdentifier: String,
+        displayName: String,
+        applicationURL: URL,
+        capabilities: BrowserTargetCapabilities
+    ) -> [BrowserTarget] {
+        let single = BrowserTarget(
+            id: bundleIdentifier,
+            displayName: displayName,
+            applicationURL: applicationURL,
+            capabilities: capabilities
+        )
+
+        guard capabilities.profileLaunchSupport.state == .supported else {
+            return [single]
+        }
+
+        let profiles = profileReader.profiles(forBundleIdentifier: bundleIdentifier)
+
+        guard profiles.count > 1 else {
+            return [single]
+        }
+
+        return profiles.map { profile in
+            BrowserTarget(
+                id: "\(bundleIdentifier)\(Self.profileIDSeparator)\(profile.directoryName)",
+                displayName: "\(displayName) – \(profile.displayName)",
+                applicationURL: applicationURL,
+                capabilities: capabilities,
+                bundleIdentifier: bundleIdentifier,
+                launchArguments: ["--profile-directory=\(profile.directoryName)"]
+            )
+        }
     }
 
     private func gatherOrderedBundleIdentifiers(for schemes: [String]) -> ([String], [String: Set<String>]) {
