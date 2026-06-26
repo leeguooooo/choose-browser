@@ -101,10 +101,45 @@ struct LiveWorkspaceOpener: WorkspaceOpening {
     }
 }
 
+/// Launches a browser with explicit process arguments (e.g.
+/// `--profile-directory=…`).
+///
+/// This deliberately does NOT use `NSWorkspace.OpenConfiguration.arguments`:
+/// those arguments are only delivered when LaunchServices spawns a brand-new
+/// process. If the browser is already running, NSWorkspace just sends it an
+/// "open URL" Apple event with NO arguments, so the URL lands in whatever
+/// profile happens to be frontmost — the exact "clicked profile ≠ opened
+/// profile" bug. Going through `/usr/bin/open -n --args` instead forces the
+/// arguments onto the process command line, where Chromium's process singleton
+/// honors `--profile-directory` even when the browser is already running, while
+/// still detaching the launched app from us.
+protocol ProfileBrowserLaunching {
+    func launch(applicationURL: URL, arguments: [String], requestURL: URL) -> Bool
+}
+
+struct LiveProfileBrowserLauncher: ProfileBrowserLaunching {
+    func launch(applicationURL: URL, arguments: [String], requestURL: URL) -> Bool {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+        process.arguments = ["-n", "-a", applicationURL.path, "--args"]
+            + arguments
+            + [requestURL.absoluteString]
+
+        do {
+            try process.run()
+            process.waitUntilExit() // `open` returns promptly once the app is launched.
+            return process.terminationStatus == 0
+        } catch {
+            return false
+        }
+    }
+}
+
 final class OpenExecutor {
     private static let safariBundleIdentifier = "com.apple.Safari"
 
     private let workspace: WorkspaceOpening
+    private let profileLauncher: ProfileBrowserLaunching
     private let now: () -> TimeInterval
     private let onFallbackDecision: ((OpenFallbackReason) -> Void)?
     private let loopGuardTTL: TimeInterval
@@ -112,11 +147,13 @@ final class OpenExecutor {
 
     init(
         workspace: WorkspaceOpening = LiveWorkspaceOpener(),
+        profileLauncher: ProfileBrowserLaunching = LiveProfileBrowserLauncher(),
         loopGuardTTL: TimeInterval = 2,
         now: @escaping () -> TimeInterval = { Date().timeIntervalSinceReferenceDate },
         onFallbackDecision: ((OpenFallbackReason) -> Void)? = nil
     ) {
         self.workspace = workspace
+        self.profileLauncher = profileLauncher
         self.loopGuardTTL = loopGuardTTL
         self.now = now
         self.onFallbackDecision = onFallbackDecision
@@ -355,11 +392,19 @@ final class OpenExecutor {
     }
 
     private func openExplicitly(requestURL: URL, target: ExecutionTarget) async -> Bool {
-        await withCheckedContinuation { continuation in
+        // Targets that carry launch arguments (e.g. a specific Chrome profile)
+        // must bypass NSWorkspace so the arguments reach an already-running
+        // browser. See `ProfileBrowserLaunching` for why.
+        if !target.launchArguments.isEmpty {
+            return profileLauncher.launch(
+                applicationURL: target.applicationURL,
+                arguments: target.launchArguments,
+                requestURL: requestURL
+            )
+        }
+
+        return await withCheckedContinuation { continuation in
             let configuration = NSWorkspace.OpenConfiguration()
-            if !target.launchArguments.isEmpty {
-                configuration.arguments = target.launchArguments
-            }
 
             workspace.open(
                 [requestURL],

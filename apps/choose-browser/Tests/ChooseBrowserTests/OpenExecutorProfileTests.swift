@@ -6,19 +6,24 @@ import XCTest
 @testable import ChooseBrowser
 
 final class OpenExecutorProfileTests: XCTestCase {
-    private final class ArgumentsSpy: WorkspaceOpening {
-        var capturedArguments: [[String]] = []
-        var capturedApplicationURLs: [URL] = []
-
+    private final class WorkspaceSpy: WorkspaceOpening {
+        var openCount = 0
         func open(
             _: [URL],
-            withApplicationAt applicationURL: URL,
-            configuration: NSWorkspace.OpenConfiguration,
+            withApplicationAt _: URL,
+            configuration _: NSWorkspace.OpenConfiguration,
             completionHandler: @escaping (NSRunningApplication?, Error?) -> Void
         ) {
-            capturedArguments.append(configuration.arguments)
-            capturedApplicationURLs.append(applicationURL)
+            openCount += 1
             completionHandler(nil, nil)
+        }
+    }
+
+    private final class ProfileLauncherSpy: ProfileBrowserLaunching {
+        var launches: [(application: URL, arguments: [String], requestURL: URL)] = []
+        func launch(applicationURL: URL, arguments: [String], requestURL: URL) -> Bool {
+            launches.append((applicationURL, arguments, requestURL))
+            return true
         }
     }
 
@@ -32,26 +37,35 @@ final class OpenExecutorProfileTests: XCTestCase {
         )
     }
 
-    func testResolvesProfileByCompositeIDAndForwardsProfileArgument() async {
-        let workspace = ArgumentsSpy()
-        let executor = OpenExecutor(workspace: workspace)
+    func testResolvesProfileByCompositeIDAndLaunchesWithProfileArgument() async {
+        let workspace = WorkspaceSpy()
+        let launcher = ProfileLauncherSpy()
+        let executor = OpenExecutor(workspace: workspace, profileLauncher: launcher)
         let personal = chromeProfileTarget(directory: "Default")
         let work = chromeProfileTarget(directory: "Profile 1")
+        let requestURL = URL(string: "https://example.com")!
 
         let result = await executor.execute(
-            requestURL: URL(string: "https://example.com")!,
+            requestURL: requestURL,
             preferredTargetBundleIdentifier: work.id,
             discoveredTargets: [personal, work],
             configuredFallbackBundleIdentifier: nil
         )
 
         XCTAssertEqual(result, .success(usedBundleIdentifier: "com.google.chrome"))
-        XCTAssertEqual(workspace.capturedArguments, [["--profile-directory=Profile 1"]])
+        // The chosen profile is launched directly (not via NSWorkspace), with
+        // its own --profile-directory argument and the request URL.
+        XCTAssertEqual(workspace.openCount, 0)
+        XCTAssertEqual(launcher.launches.count, 1)
+        XCTAssertEqual(launcher.launches.first?.arguments, ["--profile-directory=Profile 1"])
+        XCTAssertEqual(launcher.launches.first?.requestURL, requestURL)
+        XCTAssertEqual(launcher.launches.first?.application, work.applicationURL)
     }
 
-    func testOrdinaryTargetPassesNoArguments() async {
-        let workspace = ArgumentsSpy()
-        let executor = OpenExecutor(workspace: workspace)
+    func testOrdinaryTargetGoesThroughWorkspaceWithoutLauncher() async {
+        let workspace = WorkspaceSpy()
+        let launcher = ProfileLauncherSpy()
+        let executor = OpenExecutor(workspace: workspace, profileLauncher: launcher)
         let safari = ExecutionTarget(
             bundleIdentifier: "com.apple.Safari",
             displayName: "Safari",
@@ -65,7 +79,8 @@ final class OpenExecutorProfileTests: XCTestCase {
             configuredFallbackBundleIdentifier: nil
         )
 
-        XCTAssertEqual(workspace.capturedArguments, [[]])
+        XCTAssertEqual(workspace.openCount, 1)
+        XCTAssertEqual(launcher.launches.count, 0)
     }
 }
 #endif
