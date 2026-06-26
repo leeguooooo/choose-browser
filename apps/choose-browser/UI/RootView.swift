@@ -17,7 +17,10 @@ struct RootView: View {
         .confirmationDialog(
             "New Version Available",
             isPresented: Binding(
-                get: { appModel.updatePrompt != nil },
+                // Never let the update prompt cover the chooser — choosing a
+                // browser is the primary action. The prompt waits until no
+                // chooser session is active (i.e. the idle/settings surface).
+                get: { appModel.updatePrompt != nil && appModel.chooserSession == nil },
                 set: { isPresented in
                     if !isPresented {
                         appModel.dismissUpdatePrompt()
