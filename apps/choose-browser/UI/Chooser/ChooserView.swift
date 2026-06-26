@@ -43,33 +43,10 @@ private extension View {
 }
 
 struct ChooserView: View {
-    private struct TargetDropDelegate: DropDelegate {
-        let targetID: String
-        @Binding var draggedTargetID: String?
-        let onMove: (String, String) -> Void
-
-        func dropEntered(info _: DropInfo) {
-            guard let draggedTargetID, draggedTargetID != targetID else {
-                return
-            }
-
-            onMove(draggedTargetID, targetID)
-        }
-
-        func performDrop(info _: DropInfo) -> Bool {
-            draggedTargetID = nil
-            return true
-        }
-
-        func dropUpdated(info _: DropInfo) -> DropProposal? {
-            DropProposal(operation: .move)
-        }
-    }
-
     let url: URL
     @ObservedObject var viewModel: ChooserViewModel
     @FocusState private var isSearchFieldFocused: Bool
-    @State private var draggedTargetID: String?
+    @State private var dropTargetID: String?
 
     /// Short version string ("v0.1.14") read from the bundle, shown in the
     /// header so it's always obvious which build is actually running.
@@ -170,6 +147,7 @@ struct ChooserView: View {
             HStack {
                 shortcutHint(key: "↵", label: "Open")
                 shortcutHint(key: "⌥↵", label: "Always")
+                shortcutHint(key: "⌥↕", label: "Reorder")
                 Spacer()
                 shortcutHint(key: "⎋", label: "Cancel")
             }
@@ -186,10 +164,18 @@ struct ChooserView: View {
         .onChooserKeyDown { event in
             switch event.keyCode {
             case 125: // Down
-                viewModel.moveSelection(delta: 1)
+                if event.modifierFlags.contains(.option) {
+                    viewModel.moveSelectedTarget(by: 1)
+                } else {
+                    viewModel.moveSelection(delta: 1)
+                }
                 return true
             case 126: // Up
-                viewModel.moveSelection(delta: -1)
+                if event.modifierFlags.contains(.option) {
+                    viewModel.moveSelectedTarget(by: -1)
+                } else {
+                    viewModel.moveSelection(delta: -1)
+                }
                 return true
             case 36: // Enter
                 if event.modifierFlags.contains(.option) {
@@ -248,7 +234,7 @@ struct ChooserView: View {
                         .foregroundColor(isSelected ? .white : .primary)
                     
                     if isSelected {
-                        Text(target.id)
+                        Text(target.id.replacingOccurrences(of: TargetDiscovery.profileIDSeparator, with: " · "))
                             .font(.system(size: 10))
                             .foregroundColor(.white.opacity(0.7))
                     }
@@ -274,20 +260,33 @@ struct ChooserView: View {
             .selectionGlass(isSelected)
         }
         .buttonStyle(.plain)
-        .onDrag {
-            draggedTargetID = target.id
-            return NSItemProvider(object: target.id as NSString)
+        .draggable(target.id) {
+            // Drag preview.
+            HStack(spacing: 8) {
+                AppIconView(url: target.applicationURL, size: 18)
+                Text(target.displayName).font(.body)
+            }
+            .padding(8)
+            .background(.regularMaterial, in: .rect(cornerRadius: 8))
         }
-        .onDrop(
-            of: [UTType.text],
-            delegate: TargetDropDelegate(
-                targetID: target.id,
-                draggedTargetID: $draggedTargetID,
-                onMove: { draggedID, targetID in
-                    viewModel.moveTarget(draggedTargetID: draggedID, over: targetID)
-                }
-            )
-        )
+        .dropDestination(for: String.self) { items, _ in
+            guard let draggedID = items.first, draggedID != target.id else {
+                return false
+            }
+            viewModel.moveTarget(draggedTargetID: draggedID, over: target.id)
+            return true
+        } isTargeted: { targeted in
+            dropTargetID = targeted ? target.id : (dropTargetID == target.id ? nil : dropTargetID)
+        }
+        .overlay(alignment: .top) {
+            // Insertion indicator while hovering a drop target.
+            if dropTargetID == target.id {
+                Capsule()
+                    .fill(Color.accentColor)
+                    .frame(height: 2)
+                    .padding(.horizontal, 8)
+            }
+        }
     }
 
     private func shortcutHint(key: String, label: String) -> some View {

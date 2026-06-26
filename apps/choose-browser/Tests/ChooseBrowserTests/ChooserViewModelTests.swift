@@ -34,6 +34,49 @@ final class ChooserViewModelTests: XCTestCase {
         XCTAssertEqual(capturedOrders.last, [gamma.id, alpha.id, beta.id])
     }
 
+    func testMoveSelectedTargetReordersAndPersists() {
+        let alpha = makeTarget("com.browser.alpha", "Alpha")
+        let beta = makeTarget("com.browser.beta", "Beta")
+        let gamma = makeTarget("com.browser.gamma", "Gamma")
+        var capturedOrders: [[String]] = []
+        let viewModel = ChooserViewModel(
+            targets: [alpha, beta, gamma],
+            onOpenOnce: { _ in },
+            onRememberForHost: { _ in },
+            onCancel: {},
+            onOpenFallback: {},
+            onOrderChanged: { targets in capturedOrders.append(targets.map(\.id)) }
+        )
+
+        // Alpha (index 0) is selected; move it down twice -> [Beta, Gamma, Alpha].
+        viewModel.moveSelectedTarget(by: 1)
+        viewModel.moveSelectedTarget(by: 1)
+
+        XCTAssertEqual(viewModel.filteredTargets.map(\.id), [beta.id, gamma.id, alpha.id])
+        XCTAssertEqual(viewModel.selectedTarget?.id, alpha.id)
+        XCTAssertEqual(capturedOrders.last, [beta.id, gamma.id, alpha.id])
+    }
+
+    func testMoveSelectedTargetClampsAtEdges() {
+        let alpha = makeTarget("com.browser.alpha", "Alpha")
+        let beta = makeTarget("com.browser.beta", "Beta")
+        var orderChangedCount = 0
+        let viewModel = ChooserViewModel(
+            targets: [alpha, beta],
+            onOpenOnce: { _ in },
+            onRememberForHost: { _ in },
+            onCancel: {},
+            onOpenFallback: {},
+            onOrderChanged: { _ in orderChangedCount += 1 }
+        )
+
+        // Selected index 0 cannot move up.
+        viewModel.moveSelectedTarget(by: -1)
+
+        XCTAssertEqual(viewModel.filteredTargets.map(\.id), [alpha.id, beta.id])
+        XCTAssertEqual(orderChangedCount, 0)
+    }
+
     func testMoveTargetIgnoredWhileSearching() {
         let alpha = makeTarget("com.browser.alpha", "Alpha")
         let beta = makeTarget("com.browser.beta", "Beta")

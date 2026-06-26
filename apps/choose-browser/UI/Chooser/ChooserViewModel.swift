@@ -118,6 +118,33 @@ final class ChooserViewModel: ObservableObject {
         onOpenFallback()
     }
 
+    /// Moves the currently selected browser up (delta -1) or down (delta +1)
+    /// by one position and persists the new order. Used by the ⌥↑/⌥↓ keyboard
+    /// shortcuts, which work regardless of whether trackpad drag-and-drop fires.
+    func moveSelectedTarget(by delta: Int) {
+        guard searchQuery.isEmpty else {
+            return
+        }
+
+        let count = allTargets.count
+        guard count > 1 else {
+            return
+        }
+
+        let fromIndex = selectedIndex
+        let toIndex = fromIndex + delta
+        guard toIndex >= 0, toIndex < count else {
+            return
+        }
+
+        let moved = allTargets.remove(at: fromIndex)
+        allTargets.insert(moved, at: toIndex)
+        selectedIndex = toIndex
+
+        onOrderChanged(allTargets)
+        objectWillChange.send()
+    }
+
     func moveTarget(draggedTargetID: String, over targetID: String) {
         guard searchQuery.isEmpty else {
             return
