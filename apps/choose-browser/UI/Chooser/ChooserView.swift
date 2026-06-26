@@ -46,7 +46,7 @@ struct ChooserView: View {
     let url: URL
     @ObservedObject var viewModel: ChooserViewModel
     @FocusState private var isSearchFieldFocused: Bool
-    @State private var dropTargetID: String?
+    @State private var draggingIndex: Int?
 
     /// Short version string ("v0.1.14") read from the bundle, shown in the
     /// header so it's always obvious which build is actually running.
@@ -118,7 +118,7 @@ struct ChooserView: View {
             // Targets List
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(spacing: 4) {
+                    VStack(spacing: 0) {
                         if viewModel.hasTargets {
                             ForEach(Array(viewModel.filteredTargets.enumerated()), id: \.element.id) { index, target in
                                 targetRow(for: target, at: index)
@@ -220,28 +220,32 @@ struct ChooserView: View {
     @ViewBuilder
     private func targetRow(for target: ChooserTarget, at index: Int) -> some View {
         let isSelected = viewModel.isSelected(index: index)
-        
+
+        // A Button keeps tap-to-open instant and bulletproof (the core action).
+        // Reordering is handled by the verified ⌥↑/⌥↓ keyboard shortcuts and,
+        // for the trackpad, `.draggable` + a single list-level drop zone (see
+        // the list's `.dropDestination`).
         Button {
             viewModel.select(index: index)
             viewModel.triggerOpenOnce()
         } label: {
             HStack(spacing: 12) {
                 AppIconView(url: target.applicationURL, size: 24)
-                
+
                 VStack(alignment: .leading, spacing: 0) {
                     Text(target.displayName)
                         .font(.body)
                         .foregroundColor(isSelected ? .white : .primary)
-                    
+
                     if isSelected {
                         Text(target.id.replacingOccurrences(of: TargetDiscovery.profileIDSeparator, with: " · "))
                             .font(.system(size: 10))
                             .foregroundColor(.white.opacity(0.7))
                     }
                 }
-                
+
                 Spacer()
-                
+
                 if index < 9 {
                     Text("⌘\(index + 1)")
                         .font(.caption.monospacedDigit())
@@ -261,7 +265,6 @@ struct ChooserView: View {
         }
         .buttonStyle(.plain)
         .draggable(target.id) {
-            // Drag preview.
             HStack(spacing: 8) {
                 AppIconView(url: target.applicationURL, size: 18)
                 Text(target.displayName).font(.body)
@@ -276,15 +279,11 @@ struct ChooserView: View {
             viewModel.moveTarget(draggedTargetID: draggedID, over: target.id)
             return true
         } isTargeted: { targeted in
-            dropTargetID = targeted ? target.id : (dropTargetID == target.id ? nil : dropTargetID)
+            draggingIndex = targeted ? index : (draggingIndex == index ? nil : draggingIndex)
         }
         .overlay(alignment: .top) {
-            // Insertion indicator while hovering a drop target.
-            if dropTargetID == target.id {
-                Capsule()
-                    .fill(Color.accentColor)
-                    .frame(height: 2)
-                    .padding(.horizontal, 8)
+            if draggingIndex == index {
+                Capsule().fill(Color.accentColor).frame(height: 2).padding(.horizontal, 8)
             }
         }
     }

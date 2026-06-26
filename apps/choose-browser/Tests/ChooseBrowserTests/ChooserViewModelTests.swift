@@ -57,6 +57,49 @@ final class ChooserViewModelTests: XCTestCase {
         XCTAssertEqual(capturedOrders.last, [beta.id, gamma.id, alpha.id])
     }
 
+    func testMoveTargetByOffsetReordersAndClamps() {
+        let alpha = makeTarget("com.browser.alpha", "Alpha")
+        let beta = makeTarget("com.browser.beta", "Beta")
+        let gamma = makeTarget("com.browser.gamma", "Gamma")
+        var capturedOrders: [[String]] = []
+        let viewModel = ChooserViewModel(
+            targets: [alpha, beta, gamma],
+            onOpenOnce: { _ in },
+            onRememberForHost: { _ in },
+            onCancel: {},
+            onOpenFallback: {},
+            onOrderChanged: { targets in capturedOrders.append(targets.map(\.id)) }
+        )
+
+        // Drag Alpha (index 0) down by 2 -> [Beta, Gamma, Alpha].
+        viewModel.moveTarget(fromIndex: 0, byOffset: 2)
+        XCTAssertEqual(viewModel.filteredTargets.map(\.id), [beta.id, gamma.id, alpha.id])
+        XCTAssertEqual(viewModel.selectedTarget?.id, alpha.id)
+
+        // Drag it back up beyond the top (offset clamps to index 0).
+        viewModel.moveTarget(fromIndex: 2, byOffset: -5)
+        XCTAssertEqual(viewModel.filteredTargets.map(\.id), [alpha.id, beta.id, gamma.id])
+        XCTAssertEqual(capturedOrders.last, [alpha.id, beta.id, gamma.id])
+    }
+
+    func testMoveTargetByOffsetZeroIsNoOp() {
+        let alpha = makeTarget("com.browser.alpha", "Alpha")
+        let beta = makeTarget("com.browser.beta", "Beta")
+        var orderChangedCount = 0
+        let viewModel = ChooserViewModel(
+            targets: [alpha, beta],
+            onOpenOnce: { _ in },
+            onRememberForHost: { _ in },
+            onCancel: {},
+            onOpenFallback: {},
+            onOrderChanged: { _ in orderChangedCount += 1 }
+        )
+
+        viewModel.moveTarget(fromIndex: 0, byOffset: 0)
+        XCTAssertEqual(viewModel.filteredTargets.map(\.id), [alpha.id, beta.id])
+        XCTAssertEqual(orderChangedCount, 0)
+    }
+
     func testMoveSelectedTargetClampsAtEdges() {
         let alpha = makeTarget("com.browser.alpha", "Alpha")
         let beta = makeTarget("com.browser.beta", "Beta")

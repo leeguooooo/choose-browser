@@ -145,6 +145,31 @@ final class ChooserViewModel: ObservableObject {
         objectWillChange.send()
     }
 
+    /// Moves the browser at `fromIndex` by `offset` positions (clamped) and
+    /// persists. Used by the trackpad drag-reorder gesture.
+    func moveTarget(fromIndex: Int, byOffset offset: Int) {
+        guard searchQuery.isEmpty else {
+            return
+        }
+
+        let count = allTargets.count
+        guard fromIndex >= 0, fromIndex < count else {
+            return
+        }
+
+        let toIndex = max(0, min(count - 1, fromIndex + offset))
+        guard toIndex != fromIndex else {
+            return
+        }
+
+        let moved = allTargets.remove(at: fromIndex)
+        allTargets.insert(moved, at: toIndex)
+        selectedIndex = toIndex
+
+        onOrderChanged(allTargets)
+        objectWillChange.send()
+    }
+
     func moveTarget(draggedTargetID: String, over targetID: String) {
         guard searchQuery.isEmpty else {
             return
